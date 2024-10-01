@@ -3,105 +3,103 @@ import torch
 import torch.nn as nn
 
 
-class ConvBlock(nn.Module):
+class CNNModule(nn.Module): #set up a base convolutional layer, for the first or the post dilation layers
     def __init__(self,
-                 n_filters: int,
-                 in_channels: int = 4,
-                 n_layers: int = 3,
-                 conv1_kernel_size: int = 21,
-                 kernel_size: int = 3,
-                 #use_batch_norm: bool = False,
-                 #use_layer_norm: bool = False,
-                 #dropout_rate: float = 0.0,
-                 pooling: str = 'max',
-                 pooling_size: int = 2,
-                 activation_fn: nn.Module = nn.ReLU,
-                 dilation_rates=None
-                 ):
-        
-        assert pooling.lower() in ['max', 'avg']
-        super().__init__()
-
-        self.in_channels = in_channels
-        self.n_filters = n_filters
-        self.n_layers = n_layers
-        self.kernel_size = kernel_size
-        self.conv1_kernel_size = conv1_kernel_size
-        #self.use_batch_norm = use_batch_norm
-        #self.use_layer_norm = use_layer_norm
-        #self.dropout_rate = dropout_rate
-        self.pooling = nn.MaxPool1d if pooling == 'max' else nn.AvgPool1d
-        self.pooling_size = pooling_size
-        self.activation_fn = activation_fn
-        self.dilation_rates = dilation_rates if dilation_rates is not None else [2**i for i in range(n_layers)]
-
-
-        self.network = nn.ModuleList() #define a list of nn.Modules for the ConvBlock
-
-        self.network.append( #we need a first conv layer with 21 filters and no filters
-            nn.Conv1d(in_channels=self.in_channels,
-                      out_channels=self.n_filters,
-                      kernel_size=conv1_kernel_size)
-        )
-
-        for i in range(1, self.n_layers + 1):
-            in_channels = self.n_filters
-            conv_layer = nn.Conv1d(in_channels=in_channels,
-                                    out_channels=self.n_filters,
-                                    kernel_size=self.kernel_size,
-                                    dilation=2 ** i)
-            self.network.append(conv_layer)
-
-
-        self.network.append(self.pooling(self.pooling_size)) #pool after the block
+                 in_channels, 
+                 out_channels, 
+                 kernel_size, 
+                 stride=1, 
+                 padding=0,
+                 activation_fn=nn.ReLU):
+        super(CNNModule, self).__init__()
+        self.conv = nn.Conv1d(in_channels=in_channels,
+                              out_channels=out_channels, 
+                              kernel_size=kernel_size, 
+                              stride=stride, 
+                              padding=padding)
+        self.activation = activation_fn()
 
     def forward(self, x):
-        """
-        x: (batch_size, in_channels, seq_len)
-        """
-        # Pass through the first convolutional layer
-        x = self.network[0](x)  # First convolution layer
-
-        # Save the output for residual connections
-        residual = x 
-
-        # Iterate through the subsequent layers, starting with the first dilated layer
-        for i in range(1, self.n_layers + 1):
-            # Get the current convolution layer (either dilated or last layer)
-            conv_layer = self.network[i]
-            
-            # Forward through the convolution layer
-            conv_output = conv_layer(x)
-
-            # Only crop after the first layer (i.e., after the dilated layers)
-            if i > 0:  # Ensure we crop only for dilated layers
-                # Crop the residual to match the output size of the dilated conv
-                x = self._crop(residual, conv_output)
-
-                # Add the cropped input to the dilated convolution output (SKIP Connections)
-                x = conv_output + x
-                
-            # Update residual for the next layer
-            residual = x
-
-          
-        x = self.network[-1](x) # THIS IS THE POOLING LAYER
-
+        x = self.conv(x)
+        x = self.activation(x)
         return x
 
+class DilatedConvModule(nn.Module):
+    def __init__(self, in_channels, out_channels, kernel_size, dilation, padding=0, activation_fn=nn.ReLU):
+        super(DilatedConvModule, self).__init__()
+        self.conv = nn.Conv1d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, dilation=dilation, padding=padding)
+        self.activation = activation_fn()
+
+    def forward(self, x):
+        x = self.conv(x)
+        x = self.activation(x)
+        return x
+
+class Cropping1D(nn.Module):
+    def __init__(self, cropsize):
+        super().__init__()
+        self.cropsize = cropsize  # This would define how much to crop on each side
+
+    def forward(self, x):
+        # Assume prof_out_precrop has shape (batch_size, time_steps, channels)
+        steps = x.shape[1]
+
+        # Cropping based on the cropsize. Crops the first and last 'cropsize' elements from the time_steps dimension
+        cropped_output = x[:, self.cropsize:steps - self.cropsize, :]
+
+        return cropped_output
+
+class Flatten(nn.Module):
+    def __init__(self):
+        super().__init__()
+        # Assign the flatten operation to an attribute (which acts like a "name")
+        self.flatten = nn.Flatten()  # Equivalent to Flatten() in Keras
+
+    def forward(self, x):
+        # Apply the flatten operation to prof
+        x = self.flatten(x)
+        return x
+
+
+class GlobalAvgPool1D(nn.Module):
+    def __init__(self):
+        super().__init__()
     
-    def crop1d(x, target_len):
-        """
-        Crop the input tensor x to the target length in the 1st dimension.
-        Assumes x is shaped (batch_size, channels, seq_len).
-        """
-        current_len = x.size(-1)
-        crop_size = (current_len - target_len) // 2
-        return x[:, :, crop_size:crop_size+target_len]
-
-
-
+    def forward(self, x):
+        # x has shape (batch_size, time_steps, channels)
+        # Perform global average pooling across the time_steps (dim=1)
+        return torch.mean(x, dim=1)
 
 ## Can try an RNN, etc
     
+class MLP_regressor(nn.Module):
+    def __init__(self, n_input: int,
+                 n_hidden: int,
+                 n_layers: int,
+                 n_output: int,
+                 activation_fn: nn.Module
+                 ):
+        super().__init__()
+        self.n_input = n_input
+        self.n_hidden = n_hidden
+        self.n_layers = n_layers
+
+
+        self.activation_fn = activation_fn
+
+        layers = [n_input] + [n_hidden for _ in range(n_layers)]
+
+        self.network = nn.ModuleList()
+        for n_in, n_out in zip(layers[:-1], layers[1:]):
+            self.network.append(
+                nn.Linear(n_in, n_out, bias=True)
+            )
+            self.network.append(
+                self.activation_fn()
+            )
     
+        self.regressor = nn.Linear(n_hidden, n_output)
+        self.regressor = self.regressor
+        
+        self.network = nn.Sequential(*self.network)
+        self.network = self.network
