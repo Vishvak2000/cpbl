@@ -16,7 +16,10 @@ class BPNetLightning(pl.LightningModule):
                  num_tasks, 
                  sequence_len, 
                  out_pred_len, 
-                 learning_rate):
+                 learning_rate,
+                 counts_loss_weight,
+                 profile_loss_weight
+                 ):
         super().__init__()
         self.save_hyperparameters()
         
@@ -53,43 +56,45 @@ class BPNetLightning(pl.LightningModule):
                                       padding=(profile_kernel_size - 1) // 2)
         
         self.profile_crop = Cropping1D((sequence_len - (current_length + profile_kernel_size - 1) + 1) // 2)
+        
         self.global_avg_pool = GlobalAvgPool1D()
         self.count_dense = nn.Linear(filters, num_tasks)
         self.flatten = Flatten()
 
-    def forward(self, x):
-        x = self.initial_conv(x) # go through the initial convolution
-        for conv, crop_layer in zip(self.dilated_convs, self.crop_layers):
+    def forward(self, x): # Defines the architecture
+        x = self.initial_conv(x) # first convolution without dilation
+
+        for conv, crop_layer in zip(self.dilated_convs, self.crop_layers): # dilated convolution
             conv_x = conv(x)
             x = crop_layer(x)
             x = conv_x + x  # Element-wise addition (residual connection)
         
-        prof = self.profile_conv(x)
-        prof = self.profile_crop(prof)
-        # profile prediction
-        profile_out = self.flatten(prof) 
+        # Branch 1. Profile prediction
+        prof = self.profile_conv(x)  #1.1
+        prof = self.profile_crop(prof) #1.2
         
+        profile_out = self.flatten(prof)        
+        gap = self.global_avg_pool(x) 
 
         # counts prediciton
-        gap = self.global_avg_pool(x) 
         count_out = self.count_dense(gap)
         
         return profile_out, count_out
 
-    def training_step(self, batch, batch_idx): ## work on this
+    def training_step(self, batch, batch_idx): ## We call self.forward to go through the model and then calculate losses
         x, y = batch
         y_hat_profile, y_hat_count = self(x)
-        loss_profile = self.profile_loss(y_hat_profile, y['profile'])
+        loss_profile = self.profile_loss(y_hat_profile, y['profile']) # Get task specific losses
         loss_count = self.count_loss(y_hat_count, y['count'])
-        loss = loss_profile + self.hparams.counts_loss_weight * loss_count
+        loss = self.hparams.profile_loss_weight + loss_profile + self.hparams.counts_loss_weight * loss_count
         self.log('train_loss', loss)
         return loss
 
     def configure_optimizers(self):
-        return Adam(self.parameters(), lr=self.hparams.learning_rate)
+        return torch.optim.Adam(self.parameters(), lr=self.hparams.learning_rate)
 
     def profile_loss(self, predictions, targets):
-        return nn.MSELoss()(predictions, targets)
+        return nn.MSELoss()(predictions, targets) #stick with mse but we can add more further
 
     def count_loss(self, predictions, targets):
-        return nn.MSELoss()(predictions, targets)
+        return nn.MSELoss()(predictions, targets) #for counts we gotta change the loss
