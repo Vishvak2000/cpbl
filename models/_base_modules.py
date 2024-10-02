@@ -11,7 +11,7 @@ class CNNModule(nn.Module): #set up a base convolutional layer, for the first or
                  stride=1, 
                  padding=0,
                  activation_fn=nn.ReLU):
-        super(CNNModule, self).__init__()
+        super().__init__()
         self.conv = nn.Conv1d(in_channels=in_channels,
                               out_channels=out_channels, 
                               kernel_size=kernel_size, 
@@ -25,8 +25,13 @@ class CNNModule(nn.Module): #set up a base convolutional layer, for the first or
         return x
 
 class DilatedConvModule(nn.Module):
-    def __init__(self, in_channels, out_channels, kernel_size, dilation, padding=0, activation_fn=nn.ReLU):
-        super(DilatedConvModule, self).__init__()
+    def __init__(self, in_channels, 
+                 out_channels, 
+                 kernel_size, 
+                 dilation, 
+                 padding=0, 
+                 activation_fn=nn.ReLU):
+        super().__init__()
         self.conv = nn.Conv1d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, dilation=dilation, padding=padding)
         self.activation = activation_fn()
 
