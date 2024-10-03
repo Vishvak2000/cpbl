@@ -26,8 +26,8 @@ def get_seq(peaks_df,genome):
         vals.append(sequence)
     
     # Get value_counts() for each element in the list
-    lengths = peaks_df["start"] - peaks_df["end"]
-    print(lengths.value_counts())
+    lengths = peaks_df["end"] - peaks_df["start"]
+    print(f"Peak length = {lengths.value_counts()}")
     return one_hot.dna_to_one_hot(vals)
 
 

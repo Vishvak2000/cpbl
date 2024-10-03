@@ -17,8 +17,8 @@ class BPNetLightning(pl.LightningModule):
                  sequence_len, 
                  out_pred_len, 
                  learning_rate,
-                 counts_loss_weight,
-                 profile_loss_weight
+                 #counts_loss_weight,
+                 #profile_loss_weight
                  ):
         super().__init__()
         self.save_hyperparameters()
@@ -84,13 +84,22 @@ class BPNetLightning(pl.LightningModule):
         #return profile_out
         return count_out
 
-    def training_step(self, batch, batch_idx): ## We call self.forward to go through the model and then calculate losses
-        x, y = batch #  should be a list of 2, but we need 
+    def training_step(self, train_batch, batch_idx): ## We call self.forward to go through the model and then calculate losses
+        x, y = train_batch 
         y_hat_count = self(x)
         #loss_profile = self.profile_loss(y_hat_profile, y['profile']) # Get task specific losses
         loss_count = self.count_loss(y_hat_count, y)
         #loss = self.hparams.profile_loss_weight + loss_profile + self.hparams.counts_loss_weight * loss_count
-        self.log('train_loss', loss_count)
+        self.log('train_loss', loss_count, on_epoch=True,on_step=True, batch_size=y_hat_count.shape[0], sync_dist=True)
+        return loss_count
+    
+    def validation_step(self, validation_batch, batch_idx): ## We call self.forward to go through the model and then calculate losses
+        x, y = validation_batch 
+        y_hat_count = self(x)
+        #loss_profile = self.profile_loss(y_hat_profile, y['profile']) # Get task specific losses
+        loss_count = self.count_loss(y_hat_count, y)
+        #loss = self.hparams.profile_loss_weight + loss_profile + self.hparams.counts_loss_weight * loss_count
+        self.log('validation_loss', loss_count, on_epoch=True,on_step=True, batch_size=y_hat_count.shape[0], sync_dist=True)
         return loss_count
 
     def configure_optimizers(self):
@@ -99,5 +108,9 @@ class BPNetLightning(pl.LightningModule):
     #def profile_loss(self, predictions, targets):
     #    return nn.MSELoss()(predictions, targets) #stick with mse but we can add more further
 
+
     def count_loss(self, predictions, targets):
         return multinomial_nll()(predictions, targets) #for counts we gotta change the loss
+    
+
+    
