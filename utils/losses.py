@@ -1,7 +1,7 @@
 import torch
 import torch.distributions as dist
 
-def multinomial_nll(true_counts, logits):
+def multinomial_nll(logits,true_counts):
     """Compute the multinomial negative log-likelihood
     Args:
       true_counts: observed count values (torch.Tensor)

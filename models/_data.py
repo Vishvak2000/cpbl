@@ -9,13 +9,13 @@ class ChromatinDataset(Dataset):
                  nonpeak_regions, 
                  genome_fasta, 
                  cts_bw_file, 
-                 inputlen, 
-                 outputlen, 
-                 max_jitter, 
+                 #inputlen, 
+                 #outputlen, 
+                 #max_jitter, 
                  negative_sampling_ratio):
         # Load data using the provided utility function
         self.peak_seqs, self.peak_cts, self.peak_coords, self.nonpeak_seqs, self.nonpeak_cts, self.nonpeak_coords = data_utils.load_data(
-            peak_regions, nonpeak_regions, genome_fasta, cts_bw_file, inputlen, outputlen, max_jitter
+            peak_regions, nonpeak_regions, genome_fasta, cts_bw_file
         )
         
         # Sample nonpeak data

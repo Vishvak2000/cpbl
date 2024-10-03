@@ -3,7 +3,7 @@ import numpy as np
 import pytorch_lightning as pl
 import torch
 from torch import nn
-from torchmetrics import R2Score, MeanAbsoluteError, MeanSquaredError
+from utils.losses import multinomial_nll
 from ._base_modules import CNNModule, DilatedConvModule, Cropping1D, GlobalAvgPool1D, Flatten
 
 
@@ -70,31 +70,34 @@ class BPNetLightning(pl.LightningModule):
             x = conv_x + x  # Element-wise addition (residual connection)
         
         # Branch 1. Profile prediction
-        prof = self.profile_conv(x)  #1.1
-        prof = self.profile_crop(prof) #1.2
+        #prof_out_precrop = self.profile_conv(x)  #1.1
+        #prof = self.profile_crop(prof_out_precrop) #1.2
         
-        profile_out = self.flatten(prof)        
+        #profile_out = self.flatten(prof)        
+        
+        
         gap = self.global_avg_pool(x) 
 
         # counts prediciton
         count_out = self.count_dense(gap)
         
-        return profile_out, count_out
+        #return profile_out
+        return count_out
 
     def training_step(self, batch, batch_idx): ## We call self.forward to go through the model and then calculate losses
-        x, y = batch
-        y_hat_profile, y_hat_count = self(x)
-        loss_profile = self.profile_loss(y_hat_profile, y['profile']) # Get task specific losses
-        loss_count = self.count_loss(y_hat_count, y['count'])
-        loss = self.hparams.profile_loss_weight + loss_profile + self.hparams.counts_loss_weight * loss_count
-        self.log('train_loss', loss)
-        return loss
+        x, y = batch #  should be a list of 2, but we need 
+        y_hat_count = self(x)
+        #loss_profile = self.profile_loss(y_hat_profile, y['profile']) # Get task specific losses
+        loss_count = self.count_loss(y_hat_count, y)
+        #loss = self.hparams.profile_loss_weight + loss_profile + self.hparams.counts_loss_weight * loss_count
+        self.log('train_loss', loss_count)
+        return loss_count
 
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=self.hparams.learning_rate)
 
-    def profile_loss(self, predictions, targets):
-        return nn.MSELoss()(predictions, targets) #stick with mse but we can add more further
+    #def profile_loss(self, predictions, targets):
+    #    return nn.MSELoss()(predictions, targets) #stick with mse but we can add more further
 
     def count_loss(self, predictions, targets):
-        return nn.MSELoss()(predictions, targets) #for counts we gotta change the loss
+        return multinomial_nll()(predictions, targets) #for counts we gotta change the loss
