@@ -35,7 +35,7 @@ class CBPLTrainer:
             conv1_kernel_size=config["conv1_kernel_size"],
             dilation_kernel_size = config["dilation_kernel_size"],
             profile_kernel_size=config["profile_kernel_size"],
-            num_tasks=config["num_tasks"],
+            #num_tasks=config["num_tasks"],
             sequence_len=config["sequence_len"],
             out_pred_len=config["out_pred_len"],
             learning_rate=config["learning_rate"]
