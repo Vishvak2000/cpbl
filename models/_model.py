@@ -1,7 +1,12 @@
 import pytorch_lightning as pl
+import torch
 from torch.utils.data import DataLoader
 from ._data import ChromatinDataset
 from ._module import BPNetLightning 
+from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint, TQDMProgressBar
+from typing import Optional, Union
+
+
 import os
 
 class CBPLTrainer:
@@ -28,6 +33,7 @@ class CBPLTrainer:
             filters=config["filters"],
             n_dil_layers=config["n_dil_layers"],
             conv1_kernel_size=config["conv1_kernel_size"],
+            dilation_kernel_size = config["dilation_kernel_size"],
             profile_kernel_size=config["profile_kernel_size"],
             num_tasks=config["num_tasks"],
             sequence_len=config["sequence_len"],
@@ -36,15 +42,27 @@ class CBPLTrainer:
         )
 
         
-    def fit(self, epochs):
-        # Set up the PyTorch Lightning trainer
-        trainer = pl.Trainer(max_epochs=epochs,
-                             enable_progress_bar=True,
-                             )
+    def fit(self, max_epochs: int = 500,
+            batch_size: int = 128,
+            early_stopping_patience: int = 5,
+            train_size: Optional[float] = 0.9,
+            check_val_every_n_epoch: Optional[Union[int, float]] = 1,
+            save_path: Optional[str] = None,
+            #logger_out: Optional[WandbLogger] = None,
+            gpus = None):
         
-        # Train the model
-        trainer.fit(self.model, self.train_dataloader, self.valid_dataloader)
-        
+        es_callback = EarlyStopping(monitor='validation_loss', patience=early_stopping_patience, mode='min')
+
+        self.trainer = pl.Trainer(max_epochs=max_epochs,
+                                  accelerator='gpu' if torch.cuda.is_available() else 'cpu',
+                                  #devices = gpus,
+                                  #distributed_backend='ddp',
+                                  #logger=logger_out,
+                                  check_val_every_n_epoch=check_val_every_n_epoch,
+                                  enable_progress_bar=True,
+                                  default_root_dir=save_path)
+        self.trainer.fit(self.model, self.train_dataloader, self.valid_dataloader)
+
     def save_model(self, save_dir):
         # Save the model
         if not os.path.exists(save_dir):

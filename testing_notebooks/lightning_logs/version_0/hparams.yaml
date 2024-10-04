@@ -1,8 +1,0 @@
-conv1_kernel_size: 7
-filters: 64
-learning_rate: 0.001
-n_dil_layers: 3
-num_tasks: 1
-out_pred_len: 1000
-profile_kernel_size: 5
-sequence_len: 1000

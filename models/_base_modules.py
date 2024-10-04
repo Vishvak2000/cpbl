@@ -32,6 +32,7 @@ class DilatedConvModule(nn.Module):
                  padding=0, 
                  activation_fn=nn.ReLU):
         super().__init__()
+        padding = (kernel_size - 1) * dilation //2 # this is new
         self.conv = nn.Conv1d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, dilation=dilation, padding=padding)
         self.activation = activation_fn()
 
@@ -41,6 +42,20 @@ class DilatedConvModule(nn.Module):
         return x
 
 class Cropping1D(nn.Module):
+    def __init__(self, crop_size):
+        super().__init__()
+        self.crop_size = crop_size  # This will be the total amount to crop (both sides combined)
+
+    def forward(self, x):
+        # Calculate left and right crop amounts
+        crop_left = self.crop_size // 2
+        crop_right = self.crop_size - crop_left
+        
+        # Return the cropped tensor
+        return x[:, :, crop_left:-crop_right] if crop_right > 0 else x[:, :, crop_left:]
+
+
+class Cropping1D_old(nn.Module):
     def __init__(self, cropsize):
         super().__init__()
         self.cropsize = cropsize  # This would define how much to crop on each side

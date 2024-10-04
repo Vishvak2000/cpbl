@@ -4,6 +4,7 @@ import pytorch_lightning as pl
 import torch
 from torch import nn
 from utils.losses import multinomial_nll
+from torch.nn import MSELoss
 from ._base_modules import CNNModule, DilatedConvModule, Cropping1D, GlobalAvgPool1D, Flatten
 
 
@@ -11,7 +12,8 @@ class BPNetLightning(pl.LightningModule):
     def __init__(self, 
                  filters, 
                  n_dil_layers, 
-                 conv1_kernel_size, 
+                 conv1_kernel_size,
+                 dilation_kernel_size,
                  profile_kernel_size, 
                  num_tasks, 
                  sequence_len, 
@@ -22,6 +24,7 @@ class BPNetLightning(pl.LightningModule):
                  ):
         super().__init__()
         self.save_hyperparameters()
+        self.mse_loss = MSELoss()
         
         #1) initial convolutional layer, use padding to preserve sequence length
         self.initial_conv = CNNModule(in_channels=4,
@@ -31,7 +34,7 @@ class BPNetLightning(pl.LightningModule):
         
 
         self.dilated_convs = nn.ModuleList()
-        self.crop_layers = nn.ModuleList()
+        #self.crop_layers = nn.ModuleList()
 
         # Get the current length of the sequence for future cropping
         current_length = sequence_len - conv1_kernel_size + 1  # Adjust initial length after first conv
@@ -40,46 +43,41 @@ class BPNetLightning(pl.LightningModule):
             dilation = 2 ** i
             conv = DilatedConvModule(in_channels=filters,
                                      out_channels=filters, 
-                                     kernel_size=3, 
+                                     kernel_size=dilation_kernel_size, 
                                      dilation=dilation)
             self.dilated_convs.append(conv)
-            
-            # Calculate cropping size to ensure the feature maps are the same size
-            reduced_length = current_length - (2 * dilation)  # Calculate length reduction due to dilation and no padding
-            crop_size = (current_length - reduced_length) // 2
-            self.crop_layers.append(Cropping1D(crop_size))
-            current_length = reduced_length # Series of croppings for each dilation, we do this so that we remove the epec
+
+
+        #self.profile_conv = CNNModule(in_channels=filters,
+        #                              out_channels=num_tasks, 
+        #                              kernel_size=profile_kernel_size, 
+        #                              padding=(profile_kernel_size - 1) // 2)
         
-        self.profile_conv = CNNModule(in_channels=filters,
-                                      out_channels=num_tasks, 
-                                      kernel_size=profile_kernel_size, 
-                                      padding=(profile_kernel_size - 1) // 2)
-        
-        self.profile_crop = Cropping1D((sequence_len - (current_length + profile_kernel_size - 1) + 1) // 2)
+        #self.profile_crop = Cropping1D((sequence_len - (current_length + profile_kernel_size - 1) + 1) // 2)
         
         self.global_avg_pool = GlobalAvgPool1D()
-        self.count_dense = nn.Linear(filters, num_tasks)
+        self.count_dense = nn.Linear(sequence_len, sequence_len)
         self.flatten = Flatten()
 
-    def forward(self, x): # Defines the architecture
-        x = self.initial_conv(x) # first convolution without dilation
-
-        for conv, crop_layer in zip(self.dilated_convs, self.crop_layers): # dilated convolution
+    def forward(self, x):
+        #print(f"starting size:{x.shape}")
+        x = self.initial_conv(x)
+        #print(f"after first convolution:{x.shape}")
+        
+        #for i, (conv, crop_layer) in enumerate(zip(self.dilated_convs, self.crop_layers), 1):
+        for i, conv in enumerate(self.dilated_convs, 1):
+            # Apply dilated convolution (this does not reduce the length because we are padding)
             conv_x = conv(x)
-            x = crop_layer(x)
-            x = conv_x + x  # Element-wise addition (residual connection)
-        
-        # Branch 1. Profile prediction
-        #prof_out_precrop = self.profile_conv(x)  #1.1
-        #prof = self.profile_crop(prof_out_precrop) #1.2
-        
-        #profile_out = self.flatten(prof)        
-        
-        
+            #print(f"after {i}th dilation:{conv_x.shape}")
+            x = conv_x + x
+      
+        # We pool across the filters of the CNNs
         gap = self.global_avg_pool(x) 
+        #print(f"after pool:{conv_x.shape}")
 
         # counts prediciton
         count_out = self.count_dense(gap)
+        #print(f"count dimensions : {count_out.shape}")
         
         #return profile_out
         return count_out
@@ -108,9 +106,9 @@ class BPNetLightning(pl.LightningModule):
     #def profile_loss(self, predictions, targets):
     #    return nn.MSELoss()(predictions, targets) #stick with mse but we can add more further
 
-
     def count_loss(self, predictions, targets):
-        return multinomial_nll()(predictions, targets) #for counts we gotta change the loss
+        #return multinomial_nll(predictions, targets) #for counts we gotta change the loss
+        return self.mse_loss(predictions,targets)
     
 
     

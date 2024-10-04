@@ -32,7 +32,7 @@ class ChromatinDataset(Dataset):
         self.coords = np.vstack([self.peak_coords, self.sampled_nonpeak_coords])
         
         # Convert to torch tensors
-        self.seqs = torch.tensor(self.seqs, dtype=torch.float32)
+        self.seqs = torch.tensor(self.seqs, dtype=torch.float32).permute(0,2,1)
         self.cts = torch.tensor(self.cts, dtype=torch.float32)
 
     def sample_nonpeak_data(self, ratio):
