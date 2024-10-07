@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 
 
-class CNNModule(nn.Module): #set up a base convolutional layer, for the first or the post dilation layers
+class CNNModule(nn.Module):
     def __init__(self,
                  in_channels, 
                  out_channels, 
@@ -13,61 +13,64 @@ class CNNModule(nn.Module): #set up a base convolutional layer, for the first or
                  activation_fn=nn.ReLU):
         super().__init__()
         self.conv = nn.Conv1d(in_channels=in_channels,
-                              out_channels=out_channels, 
-                              kernel_size=kernel_size, 
-                              stride=stride, 
-                              padding=padding)
+                            out_channels=out_channels, 
+                            kernel_size=kernel_size, 
+                            stride=stride, 
+                            padding=padding)
         self.activation = activation_fn()
+        #self.bn = nn.BatchNorm1d(out_channels)  # Added batch normalization
 
     def forward(self, x):
         x = self.conv(x)
+        #x = self.bn(x)  # Apply batch normalization
         x = self.activation(x)
         return x
 
 class DilatedConvModule(nn.Module):
-    def __init__(self, in_channels, 
+    def __init__(self, 
+                 in_channels, 
                  out_channels, 
                  kernel_size, 
                  dilation, 
                  padding=0, 
                  activation_fn=nn.ReLU):
         super().__init__()
-        padding = (kernel_size - 1) * dilation //2 # this is new
-        self.conv = nn.Conv1d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, dilation=dilation, padding=padding)
+        # Remove automatic padding calculation to match 'valid' padding behavior
+        self.conv = nn.Conv1d(in_channels=in_channels, 
+                            out_channels=out_channels, 
+                            kernel_size=kernel_size, 
+                            dilation=dilation, 
+                            padding=padding)
         self.activation = activation_fn()
+        #self.bn = nn.BatchNorm1d(out_channels)
 
     def forward(self, x):
         x = self.conv(x)
+        #x = self.bn(x)  # Apply batch normalization
         x = self.activation(x)
         return x
 
 class Cropping1D(nn.Module):
     def __init__(self, crop_size):
         super().__init__()
-        self.crop_size = crop_size  # This will be the total amount to crop (both sides combined)
+        self.crop_size = crop_size  # Total amount to crop (both sides combined)
 
     def forward(self, x):
-        # Calculate left and right crop amounts
+        # For skip connections, we need to crop from both ends equally
         crop_left = self.crop_size // 2
         crop_right = self.crop_size - crop_left
         
-        # Return the cropped tensor
-        return x[:, :, crop_left:-crop_right] if crop_right > 0 else x[:, :, crop_left:]
+        if crop_right > 0:
+            return x[:, :, crop_left:-crop_right]
+        return x[:, :, crop_left:]
 
-
-class Cropping1D_old(nn.Module):
-    def __init__(self, cropsize):
+class GlobalAvgPool1D(nn.Module):
+    def __init__(self):
         super().__init__()
-        self.cropsize = cropsize  # This would define how much to crop on each side
-
+    
     def forward(self, x):
-        # Assume prof_out_precrop has shape (batch_size, time_steps, channels)
-        steps = x.shape[1]
-
-        # Cropping based on the cropsize. Crops the first and last 'cropsize' elements from the time_steps dimension
-        cropped_output = x[:, self.cropsize:steps - self.cropsize, :]
-
-        return cropped_output
+        # x has shape (batch_size, channels, time_steps) in PyTorch
+        return torch.mean(x, dim=2)
 
 class Flatten(nn.Module):
     def __init__(self):
@@ -88,7 +91,7 @@ class GlobalAvgPool1D(nn.Module):
     def forward(self, x):
         # x has shape (batch_size, time_steps, channels)
         # Perform global average pooling across the time_steps (dim=1)
-        return torch.mean(x, dim=1)
+        return torch.mean(x, dim=-1)
 
 ## Can try an RNN, etc
     

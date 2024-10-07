@@ -5,6 +5,7 @@ from ._data import ChromatinDataset
 from ._module import BPNetLightning 
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint, TQDMProgressBar
 from typing import Optional, Union
+from utils.shape_utils import calculate_required_input_length
 
 
 import os
@@ -19,6 +20,8 @@ class CBPLTrainer:
             nonpeak_regions=config["nonpeak_regions"],
             genome_fasta=config["genome_fasta"],
             cts_bw_file=config["cts_bw_file"],
+            input_len=config["input_seq_len"],
+            output_len=config["out_pred_len"],
             negative_sampling_ratio=config["negative_sampling_ratio"]
         )
 
@@ -34,17 +37,19 @@ class CBPLTrainer:
             n_dil_layers=config["n_dil_layers"],
             conv1_kernel_size=config["conv1_kernel_size"],
             dilation_kernel_size = config["dilation_kernel_size"],
-            profile_kernel_size=config["profile_kernel_size"],
-            #num_tasks=config["num_tasks"],
-            sequence_len=config["sequence_len"],
+            sequence_len=config["input_seq_len"],
             out_pred_len=config["out_pred_len"],
             learning_rate=config["learning_rate"]
         )
+    
 
+        required_input_length = calculate_required_input_length(self.config['out_pred_len'],config)
+        print(f"Given config['out_pred_len'] = {self.config['out_pred_len']}, we need input_len = {required_input_length} \n")
+        print(f"Current sequence length is {self.config['input_seq_len']}")
         
     def fit(self, max_epochs: int = 500,
             batch_size: int = 128,
-            early_stopping_patience: int = 5,
+            early_stopping_patience: int = 3,
             train_size: Optional[float] = 0.9,
             check_val_every_n_epoch: Optional[Union[int, float]] = 1,
             save_path: Optional[str] = None,
