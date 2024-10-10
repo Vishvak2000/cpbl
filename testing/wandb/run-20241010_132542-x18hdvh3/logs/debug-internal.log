@@ -1,0 +1,19 @@
+{"time":"2024-10-10T13:25:42.071380309-07:00","level":"INFO","msg":"using version","core version":"0.18.3"}
+{"time":"2024-10-10T13:25:42.072544652-07:00","level":"INFO","msg":"created symlink","path":"wandb/run-20241010_132542-x18hdvh3/logs/debug-core.log"}
+{"time":"2024-10-10T13:25:42.084045939-07:00","level":"ERROR","msg":"dialing: google: could not find default credentials. See https://cloud.google.com/docs/authentication/external/set-up-adc for more information"}
+{"time":"2024-10-10T13:25:42.175928555-07:00","level":"INFO","msg":"created new stream","id":"x18hdvh3"}
+{"time":"2024-10-10T13:25:42.176429225-07:00","level":"INFO","msg":"stream: started","id":"x18hdvh3"}
+{"time":"2024-10-10T13:25:42.176489776-07:00","level":"INFO","msg":"sender: started","stream_id":{"value":"x18hdvh3"}}
+{"time":"2024-10-10T13:25:42.176478476-07:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"x18hdvh3"}}
+{"time":"2024-10-10T13:25:42.176565958-07:00","level":"INFO","msg":"handler: started","stream_id":{"value":"x18hdvh3"}}
+{"time":"2024-10-10T13:25:42.18123746-07:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": dial tcp: lookup api.wandb.ai on [::1]:53: read udp [::1]:57304->[::1]:53: read: connection refused"}
+{"time":"2024-10-10T13:25:44.19287426-07:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": dial tcp: lookup api.wandb.ai on [::1]:53: read udp [::1]:56361->[::1]:53: read: connection refused"}
+{"time":"2024-10-10T13:25:49.036037006-07:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": dial tcp: lookup api.wandb.ai on [::1]:53: read udp [::1]:57824->[::1]:53: read: connection refused"}
+{"time":"2024-10-10T13:25:58.895652703-07:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": dial tcp: lookup api.wandb.ai on [::1]:53: read udp [::1]:41562->[::1]:53: read: connection refused"}
+{"time":"2024-10-10T13:26:15.734598243-07:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": dial tcp: lookup api.wandb.ai on [::1]:53: read udp [::1]:38889->[::1]:53: read: connection refused"}
+{"time":"2024-10-10T13:26:55.296987125-07:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": dial tcp: lookup api.wandb.ai on [::1]:53: read udp [::1]:33736->[::1]:53: read: connection refused"}
+{"time":"2024-10-10T13:27:12.537068183-07:00","level":"INFO","msg":"stream: closing","id":"x18hdvh3"}
+{"time":"2024-10-10T13:27:55.299369968-07:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": dial tcp: lookup api.wandb.ai on [::1]:53: read udp [::1]:48478->[::1]:53: read: connection refused"}
+{"time":"2024-10-10T13:28:55.302143352-07:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": dial tcp: lookup api.wandb.ai on [::1]:53: read udp [::1]:51165->[::1]:53: read: connection refused"}
+{"time":"2024-10-10T13:29:55.304240751-07:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": dial tcp: lookup api.wandb.ai on [::1]:53: read udp [::1]:39974->[::1]:53: read: connection refused"}
+{"time":"2024-10-10T13:30:55.306343495-07:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": dial tcp: lookup api.wandb.ai on [::1]:53: read udp [::1]:41063->[::1]:53: read: connection refused"}

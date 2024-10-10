@@ -1,0 +1,30 @@
+{
+  "os":  "Linux-4.18.0-553.5.1.el8_10.x86_64-x86_64-with-glibc2.17",
+  "python":  "3.8.20",
+  "startedAt":  "2024-10-10T21:00:05.794086Z",
+  "args":  [
+    "--use_cpu=True"
+  ],
+  "program":  "training_script.py",
+  "codePath":  "training_script.py",
+  "root":  ".",
+  "host":  "qb3-id260.wynton.ucsf.edu",
+  "username":  "vishvak",
+  "executable":  "/wynton/home/corces/vishvak/miniforge3/envs/chrombpnet/bin/python",
+  "codePathLocal":  "training_script.py",
+  "cpu_count":  48,
+  "cpu_count_logical":  96,
+  "disk":  {
+    "/":  {
+      "total":  "34342961152",
+      "used":  "7003750400"
+    }
+  },
+  "memory":  {
+    "total":  "404343922688"
+  },
+  "cpu":  {
+    "count":  48,
+    "countLogical":  96
+  }
+}

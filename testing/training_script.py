@@ -3,6 +3,9 @@ import torch
 import torch.nn as nn
 import sys
 import os
+from pytorch_lightning.loggers import WandbLogger
+
+
 
 # Function to parse command-line arguments
 def parse_args():
@@ -17,9 +20,9 @@ def parse_args():
                         help='Path to genome FASTA file')
     parser.add_argument('--cts_bw_file', type=str, default="/gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/ENCFF735AHG.bigWig",
                         help='Path to counts BigWig file')
-    parser.add_argument('--negative_sampling_ratio', type=float, default=0.1,
+    parser.add_argument('--negative_sampling_ratio', type=float, default=0,
                         help='Ratio for negative sampling')
-    parser.add_argument('--train_size', type=float, default=0.7,
+    parser.add_argument('--train_size', type=float, default=0.6,
                         help='Training data size as a fraction of the total dataset')
     parser.add_argument('--batch_size', type=int, default=32,
                         help='Batch size for training')
@@ -35,24 +38,36 @@ def parse_args():
                         help='Input sequence length')
     parser.add_argument('--out_pred_len', type=int, default=1000,
                         help='Output prediction length')
+    parser.add_argument('--dropout_rate', type=float, default=0.0,
+                        help='Dropout rate')
     parser.add_argument('--learning_rate', type=float, default=0.001,
                         help='Learning rate for the optimizer')
+    parser.add_argument('--project', type=str, default="chrombpnetL",
+                        help='Project name for wandb')
+    parser.add_argument('--use_cpu',type=bool,default=True,
+                        help='Using CPU or GPU')
     
     return parser.parse_args()
 
 def main():
     # Parse command-line arguments
     args = parse_args()
+   
+    wandb_logger = WandbLogger(project=args.project)
 
     # Set the number of threads to use (30% of available CPU cores)
-    total_cores = os.cpu_count()
-    num_cores_to_use = max(1, int(total_cores * 0.3))  # Ensure at least one core is used
-    torch.set_num_threads(num_cores_to_use)
+    if args.use_cpu:
+        total_cores = os.cpu_count()
+        num_cores_to_use = max(1, int(total_cores * 1))  # Ensure at least one core is used
+        torch.set_num_threads(num_cores_to_use)
 
     # Add the parent directory to the Python path
     sys.path.append(os.path.abspath(os.path.join('..')))
 
     from models._model import CBPLTrainer
+    
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Using device: {device}")
 
     # Create the config dictionary from parsed arguments
     config = {
@@ -69,7 +84,8 @@ def main():
         "dilation_kernel_size": args.dilation_kernel_size,
         "input_seq_len": args.input_seq_len,
         "out_pred_len": args.out_pred_len,
-        "learning_rate": args.learning_rate,
+        "dropout_rate": args.dropout_rate,
+        "learning_rate": args.learning_rate
     }
 
     trainer = CBPLTrainer(config)
@@ -77,7 +93,7 @@ def main():
     # Optional: Print model architecture for verification
     print(trainer.model)
 
-    trainer.fit()
+    trainer.fit(logger_out=wandb_logger)
 
 if __name__ == "__main__":
     main()

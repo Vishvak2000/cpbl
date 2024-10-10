@@ -64,14 +64,6 @@ class Cropping1D(nn.Module):
             return x[:, :, crop_left:-crop_right]
         return x[:, :, crop_left:]
 
-class GlobalAvgPool1D(nn.Module):
-    def __init__(self):
-        super().__init__()
-    
-    def forward(self, x):
-        # x has shape (batch_size, channels, time_steps) in PyTorch
-        return torch.mean(x, dim=2)
-
 class Flatten(nn.Module):
     def __init__(self):
         super().__init__()
@@ -92,37 +84,3 @@ class GlobalAvgPool1D(nn.Module):
         # x has shape (batch_size, time_steps, channels)
         # Perform global average pooling across the time_steps (dim=1)
         return torch.mean(x, dim=-1)
-
-## Can try an RNN, etc
-    
-class MLP_regressor(nn.Module):
-    def __init__(self, n_input: int,
-                 n_hidden: int,
-                 n_layers: int,
-                 n_output: int,
-                 activation_fn: nn.Module
-                 ):
-        super().__init__()
-        self.n_input = n_input
-        self.n_hidden = n_hidden
-        self.n_layers = n_layers
-
-
-        self.activation_fn = activation_fn
-
-        layers = [n_input] + [n_hidden for _ in range(n_layers)]
-
-        self.network = nn.ModuleList()
-        for n_in, n_out in zip(layers[:-1], layers[1:]):
-            self.network.append(
-                nn.Linear(n_in, n_out, bias=True)
-            )
-            self.network.append(
-                self.activation_fn()
-            )
-    
-        self.regressor = nn.Linear(n_hidden, n_output)
-        self.regressor = self.regressor
-        
-        self.network = nn.Sequential(*self.network)
-        self.network = self.network
