@@ -6,6 +6,8 @@ from utils.losses import multinomial_nll
 from torch.nn import MSELoss
 from ._base_modules import CNNModule, DilatedConvModule, Cropping1D, GlobalAvgPool1D, Flatten
 from utils.shape_utils import calculate_layer_output_length
+from torchmetrics.regression import KLDivergence, ExplainedVariance, CosineSimilarity, MeanAbsoluteError, R2Score
+
 
 class BPNetLightning(pl.LightningModule):
     def __init__(self, 
@@ -15,10 +17,21 @@ class BPNetLightning(pl.LightningModule):
                  dilation_kernel_size,
                  sequence_len,
                  out_pred_len, 
-                 learning_rate):
+                 learning_rate,
+                 dropout_rate):
         super().__init__()
         self.save_hyperparameters()
-        self.mse_loss = MSELoss()
+
+     
+        self.eval_metrics = nn.ModuleDict({
+            "mse" : MSELoss(),
+            "kl_divergence" : KLDivergence(),
+            "explained_variance" : ExplainedVariance(),
+            "cosine_similarity" : CosineSimilarity(),
+            "mae" : MeanAbsoluteError(),
+            #"r2" : R2Score()
+        })
+        
         
         # Initial conv with no padding (valid padding)
         self.initial_conv = CNNModule(in_channels=4,
@@ -68,6 +81,11 @@ class BPNetLightning(pl.LightningModule):
             current_length = conv_output_length
 
         self.global_avg_pool = GlobalAvgPool1D()
+
+        if dropout_rate!=0.0:
+            self.dropout = nn.Dropout(dropout_rate)
+    
+
         self.count_dense = nn.Linear(filters, out_pred_len)  # Modified to use filters as input
 
     def forward(self, x):
@@ -83,6 +101,9 @@ class BPNetLightning(pl.LightningModule):
         
         # Global average pooling across the sequence length
         x = self.global_avg_pool(x)
+
+        if hasattr(self, 'dropout'):
+            x = self.dropout(x)
         
         # Final dense layer for count prediction
         count_out = nn.ReLU()(self.count_dense(x)) # add a relu here to force the outputs to be positive
@@ -115,19 +136,36 @@ class BPNetLightning(pl.LightningModule):
             #return profile_out
             return count_out
 
+    def calculate_metrics(self, y_hat, y):
+        results = {}
+        for metric_name, metric_fn in self.eval_metrics.items():
+            results[metric_name] = metric_fn(y_hat, y)
+
+        return results
+
+    def log_metrics(self, y_hat, y, prefix):
+        metrics = self.calculate_metrics(y_hat, y)
+    
+        for metric_name, metric_value in metrics.items():
+            self.log(f"{prefix}_{metric_name}", metric_value, on_step=False, on_epoch=True,logger=True)
+
+        return metrics["mse"]
+
     def training_step(self, train_batch, batch_idx):
         x, y = train_batch 
         y_hat_count = self(x)
-        loss_count = self.count_loss(y_hat_count, y)
-        self.log('train_loss', loss_count, on_epoch=True, on_step=True, batch_size=y_hat_count.shape[0], prog_bar = True)
-        return loss_count
+        #loss_count = self.count_loss(y_hat_count, y)
+        loss = self.log_metrics(y_hat_count,y,"train")
+        #self.log('train_loss', loss_count, on_epoch=True, on_step=True, batch_size=y_hat_count.shape[0], prog_bar = True)
+        return loss
     
     def validation_step(self, validation_batch, batch_idx):
         x, y = validation_batch 
         y_hat_count = self(x)
-        loss_count = self.count_loss(y_hat_count, y)
-        self.log('validation_loss', loss_count, on_epoch=True, on_step=True, batch_size=y_hat_count.shape[0], prog_bar=True)
-        return loss_count
+        #loss_count = self.count_loss(y_hat_count, y)
+        loss = self.log_metrics(y_hat_count,y,"val")
+        #self.log('train_loss', loss_count, on_epoch=True, on_step=True, batch_size=y_hat_count.shape[0], prog_bar = True)
+        return loss
 
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=self.hparams.learning_rate)

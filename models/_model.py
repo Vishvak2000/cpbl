@@ -6,6 +6,8 @@ from ._module import BPNetLightning
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint, TQDMProgressBar
 from typing import Optional, Union
 from utils.shape_utils import calculate_required_input_length
+from pytorch_lightning.loggers import WandbLogger
+
 
 
 import os
@@ -39,7 +41,8 @@ class CBPLTrainer:
             dilation_kernel_size = config["dilation_kernel_size"],
             sequence_len=config["input_seq_len"],
             out_pred_len=config["out_pred_len"],
-            learning_rate=config["learning_rate"]
+            learning_rate=config["learning_rate"],
+            dropout_rate = config["dropout_rate"]
         )
     
 
@@ -47,25 +50,26 @@ class CBPLTrainer:
         print(f"Given config['out_pred_len'] = {self.config['out_pred_len']}, we need input_len = {required_input_length} \n")
         print(f"Current sequence length is {self.config['input_seq_len']}")
         
-    def fit(self, max_epochs: int = 500,
+    def fit(self, max_epochs: int = 50,
             batch_size: int = 128,
-            early_stopping_patience: int = 3,
+            early_stopping_patience: int = 10,
             train_size: Optional[float] = 0.9,
             check_val_every_n_epoch: Optional[Union[int, float]] = 1,
             save_path: Optional[str] = None,
-            #logger_out: Optional[WandbLogger] = None,
+            logger_out: Optional[WandbLogger] = None,
             gpus = None):
         
-        es_callback = EarlyStopping(monitor='validation_loss', patience=early_stopping_patience, mode='min')
+        es_callback = EarlyStopping(monitor='validation_loss', patience=early_stopping_patience, verbose=True, mode='min')
 
         self.trainer = pl.Trainer(max_epochs=max_epochs,
-                                  accelerator='gpu' if torch.cuda.is_available() else 'cpu',
+                                  #accelerator='gpu' if torch.cuda.is_available() else 'cpu',
                                   #devices = gpus,
                                   #distributed_backend='ddp',
-                                  #logger=logger_out,
+                                  logger=logger_out,
                                   check_val_every_n_epoch=check_val_every_n_epoch,
                                   enable_progress_bar=True,
-                                  default_root_dir=save_path)
+                                  default_root_dir=save_path,
+                                  callbacks=[es_callback])
         self.trainer.fit(self.model, self.train_dataloader, self.valid_dataloader)
 
     def save_model(self, save_dir):
