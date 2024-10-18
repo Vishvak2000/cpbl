@@ -17,7 +17,7 @@
 2.685     Total estimated model params size (MB)
 50        Modules in train mode
 0         Modules in eval mode
-Epoch 19:  67%|██████████████████████████████████████████████████                         | 148/222 [05:07<02:33,  0.48it/s, v_num=pemw, learning_rate=0.00189]
+Epoch 19:  73%|███████████████████████████████████████████████████████                    | 163/222 [05:31<02:00,  0.49it/s, v_num=pemw, learning_rate=0.00189]
                                                                                                                                                                
 Metric val_weighted_mse improved. New best score: 6823.020
 Metric val_weighted_mse improved by 59.301 >= min_delta = 0.0. New best score: 6763.719
