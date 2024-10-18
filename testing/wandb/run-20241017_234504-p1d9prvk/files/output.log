@@ -1,0 +1,26 @@
+/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/torch/optim/lr_scheduler.py:60: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+
+  | Name            | Type            | Params | Mode
+------------------------------------------------------------
+0 | eval_metrics    | ModuleDict      | 0      | train
+1 | initial_conv    | CNNModule       | 8.9 K  | train
+2 | initial_bn      | BatchNorm1d     | 192    | train
+3 | dilated_convs   | ModuleList      | 516 K  | train
+4 | batch_norms     | ModuleList      | 3.1 K  | train
+5 | crop_layers     | ModuleList      | 0      | train
+6 | global_avg_pool | GlobalAvgPool1D | 0      | train
+7 | dropout         | Dropout         | 0      | train
+8 | count_dense     | Linear          | 145 K  | train
+------------------------------------------------------------
+674 K     Trainable params
+0         Non-trainable params
+674 K     Total params
+2.698     Total estimated model params size (MB)
+68        Modules in train mode
+0         Modules in eval mode
+Epoch 0:   9%|███████▋                                                                         | 21/222 [01:12<11:29,  0.29it/s, v_num=prvk]
+/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:424: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=127` in the `DataLoader` to improve performance.
+/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:424: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=127` in the `DataLoader` to improve performance.
+
+Detected KeyboardInterrupt, attempting graceful shutdown ...

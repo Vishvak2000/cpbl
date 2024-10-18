@@ -1,0 +1,26 @@
+/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/torch/optim/lr_scheduler.py:60: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+Traceback (most recent call last):
+  File "training_script.py", line 113, in <module>
+    main()
+  File "training_script.py", line 110, in main
+    trainer.fit(logger_out=wandb_logger)
+  File "/corces/home/vishvak/pytorch_cbp/models/_model.py", line 77, in fit
+    self.trainer.fit(self.model, self.train_dataloader, self.valid_dataloader)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 538, in fit
+    call._call_and_handle_interrupt(
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/call.py", line 47, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 574, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 957, in _run
+    self.strategy.setup(self)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/strategies/strategy.py", line 158, in setup
+    self.setup_optimizers(trainer)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/strategies/strategy.py", line 138, in setup_optimizers
+    self.optimizers, self.lr_scheduler_configs = _init_optimizers_and_lr_schedulers(self.lightning_module)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/core/optimizer.py", line 189, in _init_optimizers_and_lr_schedulers
+    _configure_schedulers_automatic_opt(lr_schedulers, monitor)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/core/optimizer.py", line 292, in _configure_schedulers_automatic_opt
+    raise MisconfigurationException(
+lightning_fabric.utilities.exceptions.MisconfigurationException: `configure_optimizers` must include a monitor when a `ReduceLROnPlateau` scheduler is used. For example: {"optimizer": optimizer, "lr_scheduler": scheduler, "monitor": "metric_to_track"}

@@ -1,0 +1,33 @@
+/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/torch/optim/lr_scheduler.py:60: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+
+  | Name            | Type            | Params | Mode
+------------------------------------------------------------
+0 | eval_metrics    | ModuleDict      | 0      | train
+1 | initial_conv    | CNNModule       | 8.9 K  | train
+2 | dilated_convs   | ModuleList      | 516 K  | train
+3 | crop_layers     | ModuleList      | 0      | train
+4 | global_avg_pool | GlobalAvgPool1D | 0      | train
+5 | dropout         | Dropout         | 0      | train
+6 | count_dense     | Linear          | 145 K  | train
+------------------------------------------------------------
+671 K     Trainable params
+0         Non-trainable params
+671 K     Total params
+2.685     Total estimated model params size (MB)
+50        Modules in train mode
+0         Modules in eval mode
+Epoch 19:  67%|██████████████████████████████████████████████████                         | 148/222 [05:07<02:33,  0.48it/s, v_num=pemw, learning_rate=0.00189]
+                                                                                                                                                               
+Metric val_weighted_mse improved. New best score: 6823.020
+Metric val_weighted_mse improved by 59.301 >= min_delta = 0.0. New best score: 6763.719
+Metric val_weighted_mse improved by 240.395 >= min_delta = 0.0. New best score: 6523.324
+Metric val_weighted_mse improved by 293.241 >= min_delta = 0.0. New best score: 6230.083
+Metric val_weighted_mse improved by 197.414 >= min_delta = 0.0. New best score: 6032.669
+Metric val_weighted_mse improved by 424.652 >= min_delta = 0.0. New best score: 5608.017
+Metric val_weighted_mse improved by 94.667 >= min_delta = 0.0. New best score: 5513.349
+Metric val_weighted_mse improved by 288.121 >= min_delta = 0.0. New best score: 5225.229
+Metric val_weighted_mse improved by 181.168 >= min_delta = 0.0. New best score: 5044.061
+Metric val_weighted_mse improved by 266.765 >= min_delta = 0.0. New best score: 4777.296
+Metric val_weighted_mse improved by 27.132 >= min_delta = 0.0. New best score: 4750.164
+Metric val_weighted_mse improved by 145.975 >= min_delta = 0.0. New best score: 4604.189

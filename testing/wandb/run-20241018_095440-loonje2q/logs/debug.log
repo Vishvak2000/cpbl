@@ -1,0 +1,27 @@
+2024-10-18 09:54:40,811 INFO    MainThread:2613382 [wandb_setup.py:_flush():79] Current SDK version is 0.18.3
+2024-10-18 09:54:40,812 INFO    MainThread:2613382 [wandb_setup.py:_flush():79] Configure stats pid to 2613382
+2024-10-18 09:54:40,812 INFO    MainThread:2613382 [wandb_setup.py:_flush():79] Loading settings from /corces/home/vishvak/.config/wandb/settings
+2024-10-18 09:54:40,812 INFO    MainThread:2613382 [wandb_setup.py:_flush():79] Loading settings from /corces/home/vishvak/pytorch_cbp/testing/wandb/settings
+2024-10-18 09:54:40,812 INFO    MainThread:2613382 [wandb_setup.py:_flush():79] Loading settings from environment variables: {}
+2024-10-18 09:54:40,812 INFO    MainThread:2613382 [wandb_setup.py:_flush():79] Applying setup settings: {'mode': None, '_disable_service': None}
+2024-10-18 09:54:40,812 INFO    MainThread:2613382 [wandb_setup.py:_flush():79] Inferring run settings from compute environment: {'program_relpath': 'testing/training_script.py', 'program_abspath': '/corces/home/vishvak/pytorch_cbp/testing/training_script.py', 'program': 'training_script.py'}
+2024-10-18 09:54:40,812 INFO    MainThread:2613382 [wandb_setup.py:_flush():79] Applying login settings: {}
+2024-10-18 09:54:40,812 INFO    MainThread:2613382 [wandb_init.py:_log_setup():532] Logging user logs to ./wandb/run-20241018_095440-loonje2q/logs/debug.log
+2024-10-18 09:54:40,812 INFO    MainThread:2613382 [wandb_init.py:_log_setup():533] Logging internal logs to ./wandb/run-20241018_095440-loonje2q/logs/debug-internal.log
+2024-10-18 09:54:40,812 INFO    MainThread:2613382 [wandb_init.py:init():617] calling init triggers
+2024-10-18 09:54:40,812 INFO    MainThread:2613382 [wandb_init.py:init():624] wandb.init called with sweep_config: {}
+config: {'peak_regions': '/gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/test.chr1_to_chr10.no_blacklist.bed', 'nonpeak_regions': '/gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/test.chr1.negatives.adjusted.bed', 'genome_fasta': '/gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/data/downloads/hg38.fa', 'cts_bw_file': '/gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/ENCFF735AHG.bigWig', 'negative_sampling_ratio': 0, 'train_size': 0.6, 'batch_size': 1024, 'filters': 96, 'n_dil_layers': 8, 'conv1_kernel_size': 23, 'dilation_kernel_size': 7, 'input_seq_len': 3107, 'out_pred_len': 1500, 'dropout_rate': 0.2, 'learning_rate': 0.001894, 'train_chrs': ['chr1', 'chr2', 'chr3', 'chr4', 'chr5'], 'valid_chrs': ['chr6', 'chr7'], 'seq_focus_len': 500, 'loss': 'weighted_norm_mse'}
+2024-10-18 09:54:40,812 INFO    MainThread:2613382 [wandb_init.py:init():667] starting backend
+2024-10-18 09:54:40,812 INFO    MainThread:2613382 [wandb_init.py:init():671] sending inform_init request
+2024-10-18 09:54:40,813 INFO    MainThread:2613382 [backend.py:_multiprocessing_setup():104] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2024-10-18 09:54:40,814 INFO    MainThread:2613382 [wandb_init.py:init():684] backend started and connected
+2024-10-18 09:54:40,817 INFO    MainThread:2613382 [wandb_init.py:init():779] updated telemetry
+2024-10-18 09:54:40,853 INFO    MainThread:2613382 [wandb_init.py:init():812] communicating run to backend with 90.0 second timeout
+2024-10-18 09:54:41,258 INFO    MainThread:2613382 [wandb_init.py:init():863] starting run threads in backend
+2024-10-18 09:54:41,377 INFO    MainThread:2613382 [wandb_run.py:_console_start():2465] atexit reg
+2024-10-18 09:54:41,378 INFO    MainThread:2613382 [wandb_run.py:_redirect():2313] redirect: wrap_raw
+2024-10-18 09:54:41,378 INFO    MainThread:2613382 [wandb_run.py:_redirect():2378] Wrapping output streams.
+2024-10-18 09:54:41,378 INFO    MainThread:2613382 [wandb_run.py:_redirect():2403] Redirects installed.
+2024-10-18 09:54:41,380 INFO    MainThread:2613382 [wandb_init.py:init():907] run started, returning control to user process
+2024-10-18 09:54:41,385 INFO    MainThread:2613382 [wandb_run.py:_config_callback():1394] config_cb None None {'filters': 96, 'n_dil_layers': 8, 'conv1_kernel_size': 23, 'dilation_kernel_size': 7, 'sequence_len': 3107, 'out_pred_len': 1500, 'learning_rate': 0.001894, 'dropout_rate': 0.2, 'seq_focus_len': 500, 'loss': 'weighted_norm_mse'}
+2024-10-18 09:55:30,376 WARNING MsgRouterThr:2613382 [router.py:message_loop():77] message_loop has been closed

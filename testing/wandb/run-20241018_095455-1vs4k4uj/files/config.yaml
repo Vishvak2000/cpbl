@@ -1,0 +1,199 @@
+_wandb:
+    value:
+        cli_version: 0.18.3
+        m:
+            - "1": train_mse
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": trainer/global_step
+              "6":
+                - 3
+              "7": []
+            - "1": val_mse
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": val_kl_divergence
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": learning_rate
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": val_explained_variance
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": train_mae
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": train_weighted_mse
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": train_kl_divergence
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": val_r2
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": val_focused_mse
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": val_weighted_mse
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": val_weighted_norm_mse
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": val_cosine_similarity
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": train_focused_mse
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": train_r2
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": train_weighted_norm_mse
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": train_cosine_similarity
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": val_mae
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": epoch
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+            - "1": train_explained_variance
+              "5": 2
+              "6":
+                - 1
+                - 3
+              "7": []
+        python_version: 3.8.20
+        t:
+            "1":
+                - 1
+                - 9
+                - 55
+                - 103
+            "2":
+                - 1
+                - 9
+                - 55
+                - 103
+            "3":
+                - 7
+                - 16
+                - 23
+                - 55
+                - 66
+            "4": 3.8.20
+            "5": 0.18.3
+            "8":
+                - 5
+            "12": 0.18.3
+            "13": linux-x86_64
+batch_size:
+    value: 128
+conv1_kernel_size:
+    value: 23
+cts_bw_file:
+    value: /gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/ENCFF735AHG.bigWig
+dilation_kernel_size:
+    value: 7
+dropout_rate:
+    value: 0.2
+filters:
+    value: 96
+genome_fasta:
+    value: /gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/data/downloads/hg38.fa
+input_seq_len:
+    value: 3107
+learning_rate:
+    value: 0.001894
+loss:
+    value: mse
+n_dil_layers:
+    value: 8
+negative_sampling_ratio:
+    value: 0
+nonpeak_regions:
+    value: /gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/test.chr1.negatives.adjusted.bed
+out_pred_len:
+    value: 1500
+peak_regions:
+    value: /gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/test.chr1_to_chr10.no_blacklist.bed
+seq_focus_len:
+    value: 500
+sequence_len:
+    value: 3107
+train_chrs:
+    value:
+        - chr1
+        - chr2
+        - chr3
+        - chr4
+        - chr5
+train_size:
+    value: 0.6
+valid_chrs:
+    value:
+        - chr6
+        - chr7

@@ -1,0 +1,13 @@
+{"time":"2024-10-17T23:45:04.523631735-07:00","level":"INFO","msg":"using version","core version":"0.18.3"}
+{"time":"2024-10-17T23:45:04.523646022-07:00","level":"INFO","msg":"created symlink","path":"wandb/run-20241017_234504-p1d9prvk/logs/debug-core.log"}
+{"time":"2024-10-17T23:45:04.524357683-07:00","level":"ERROR","msg":"dialing: google: could not find default credentials. See https://cloud.google.com/docs/authentication/external/set-up-adc for more information"}
+{"time":"2024-10-17T23:45:04.530410334-07:00","level":"INFO","msg":"created new stream","id":"p1d9prvk"}
+{"time":"2024-10-17T23:45:04.530440311-07:00","level":"INFO","msg":"stream: started","id":"p1d9prvk"}
+{"time":"2024-10-17T23:45:04.530454017-07:00","level":"INFO","msg":"handler: started","stream_id":{"value":"p1d9prvk"}}
+{"time":"2024-10-17T23:45:04.530467983-07:00","level":"INFO","msg":"sender: started","stream_id":{"value":"p1d9prvk"}}
+{"time":"2024-10-17T23:45:04.530449368-07:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"p1d9prvk"}}
+{"time":"2024-10-17T23:45:05.023174721-07:00","level":"INFO","msg":"wandb-core","!BADKEY":null}
+{"time":"2024-10-17T23:45:05.024086659-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-10-17T23:46:20.86502047-07:00","level":"INFO","msg":"stream: closing","id":"p1d9prvk"}
+{"time":"2024-10-17T23:46:20.865059143-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-10-17T23:46:20.865149994-07:00","level":"INFO","msg":"Stopped system monitor"}

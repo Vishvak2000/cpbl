@@ -45,7 +45,8 @@ class CBPLTrainer:
             out_pred_len=config["out_pred_len"],
             learning_rate=config["learning_rate"],
             dropout_rate = config["dropout_rate"],
-            seq_focus_len=config["seq_focus_len"]
+            seq_focus_len=config["seq_focus_len"],
+            loss=config["loss"]
         )
     
 
@@ -55,7 +56,7 @@ class CBPLTrainer:
         
     def fit(self, max_epochs: int = 50,
             batch_size: int = 128,
-            early_stopping_patience: int = 3,
+            early_stopping_patience: int = 5,
             #train_size: Optional[float] = 0.9,
             check_val_every_n_epoch: Optional[Union[int, float]] = 1,
             save_path: Optional[str] = None,

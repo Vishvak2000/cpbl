@@ -1,0 +1,29 @@
+/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/torch/optim/lr_scheduler.py:60: UserWarning: The verbose parameter is deprecated. Please use get_last_lr() to access the learning rate.
+  warnings.warn(
+
+  | Name            | Type            | Params | Mode
+------------------------------------------------------------
+0 | eval_metrics    | ModuleDict      | 0      | train
+1 | initial_conv    | CNNModule       | 8.9 K  | train
+2 | initial_bn      | BatchNorm1d     | 192    | train
+3 | dilated_convs   | ModuleList      | 516 K  | train
+4 | batch_norms     | ModuleList      | 3.1 K  | train
+5 | crop_layers     | ModuleList      | 0      | train
+6 | global_avg_pool | GlobalAvgPool1D | 0      | train
+7 | dropout         | Dropout         | 0      | train
+8 | count_dense     | Linear          | 145 K  | train
+------------------------------------------------------------
+674 K     Trainable params
+0         Non-trainable params
+674 K     Total params
+2.698     Total estimated model params size (MB)
+68        Modules in train mode
+0         Modules in eval mode
+Epoch 10: 100%|███████████████████████████████████████████████████████████████████████████████| 222/222 [20:03<00:00,  0.18it/s, v_num=8m5f]
+                                                                                                                                            
+Metric val_weighted_mse improved. New best score: 6477.251
+Metric val_weighted_mse improved by 490.968 >= min_delta = 0.0. New best score: 5986.283
+Metric val_weighted_mse improved by 626.762 >= min_delta = 0.0. New best score: 5359.521
+Metric val_weighted_mse improved by 118.836 >= min_delta = 0.0. New best score: 5240.686
+Metric val_weighted_mse improved by 637.399 >= min_delta = 0.0. New best score: 4603.287
+Monitored metric val_weighted_mse did not improve in the last 5 records. Best score: 4603.287. Signaling Trainer to stop.

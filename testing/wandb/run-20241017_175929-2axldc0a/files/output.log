@@ -1,0 +1,33 @@
+
+  | Name            | Type            | Params | Mode
+------------------------------------------------------------
+0 | eval_metrics    | ModuleDict      | 0      | train
+1 | initial_conv    | CNNModule       | 8.9 K  | train
+2 | dilated_convs   | ModuleList      | 516 K  | train
+3 | crop_layers     | ModuleList      | 0      | train
+4 | global_avg_pool | GlobalAvgPool1D | 0      | train
+5 | dropout         | Dropout         | 0      | train
+6 | count_dense     | Linear          | 145 K  | train
+------------------------------------------------------------
+671 K     Trainable params
+0         Non-trainable params
+671 K     Total params
+2.685     Total estimated model params size (MB)
+49        Modules in train mode
+0         Modules in eval mode
+Epoch 16: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████| 222/222 [13:43<00:00,  0.27it/s, v_num=dc0a]
+/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:424: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=127` in the `DataLoader` to improve performance.
+/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:424: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=127` in the `DataLoader` to improve performance.
+                                                                                                                                                               
+Metric val_weighted_mse improved. New best score: 9422.807
+Metric val_weighted_mse improved by 96.812 >= min_delta = 0.0. New best score: 9325.995
+Metric val_weighted_mse improved by 305.420 >= min_delta = 0.0. New best score: 9020.575
+Metric val_weighted_mse improved by 437.706 >= min_delta = 0.0. New best score: 8582.869
+Metric val_weighted_mse improved by 86.652 >= min_delta = 0.0. New best score: 8496.217
+Metric val_weighted_mse improved by 291.299 >= min_delta = 0.0. New best score: 8204.918
+Metric val_weighted_mse improved by 689.971 >= min_delta = 0.0. New best score: 7514.947
+Metric val_weighted_mse improved by 350.445 >= min_delta = 0.0. New best score: 7164.501
+Metric val_weighted_mse improved by 216.708 >= min_delta = 0.0. New best score: 6947.794
+Metric val_weighted_mse improved by 185.905 >= min_delta = 0.0. New best score: 6761.889
+Metric val_weighted_mse improved by 394.604 >= min_delta = 0.0. New best score: 6367.285
+Monitored metric val_weighted_mse did not improve in the last 3 records. Best score: 6367.285. Signaling Trainer to stop.

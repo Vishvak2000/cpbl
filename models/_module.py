@@ -2,7 +2,7 @@ import numpy as np
 import pytorch_lightning as pl
 import torch
 from torch import nn
-from utils.losses import WeightedMSELoss, FocusedMSELoss
+from utils.losses import WeightedMSELoss, FocusedMSELoss, WeightedMSELossNorm
 from torch.nn import MSELoss
 from ._base_modules import CNNModule, DilatedConvModule, Cropping1D, GlobalAvgPool1D, Flatten
 from utils.shape_utils import calculate_layer_output_length
@@ -19,13 +19,15 @@ class BPNetLightning(pl.LightningModule):
                  out_pred_len, # can add loss hyperparams here
                  learning_rate,
                  dropout_rate,
-                 seq_focus_len):
+                 seq_focus_len,
+                 loss):
         super().__init__()
         self.save_hyperparameters()
 
      
         self.eval_metrics = nn.ModuleDict({
             "weighted_mse" : WeightedMSELoss(sequence_length=out_pred_len,center_size=seq_focus_len),
+            "weighted_norm_mse" : WeightedMSELossNorm(sequence_length=out_pred_len,center_size=seq_focus_len),
             "focused_mse" : FocusedMSELoss(n=500),
             "mse" : MSELoss(),
             "kl_divergence" : KLDivergence(log_prob=False),
@@ -35,6 +37,10 @@ class BPNetLightning(pl.LightningModule):
             "r2" : R2Score()
         })
         
+        if loss not in self.eval_metrics:
+            raise ValueError(f"Invalid loss parameter: '{loss}'. Must be one of: {list(self.eval_metrics.keys())}")
+
+        self.loss = loss  
         
         # Initial conv with no padding (valid padding)
         self.initial_conv = CNNModule(in_channels=4,
@@ -42,7 +48,10 @@ class BPNetLightning(pl.LightningModule):
                                     kernel_size=conv1_kernel_size, 
                                     padding=0)  # Changed to no padding
         
+        #self.initial_bn = nn.BatchNorm1d(filters)
+        
         self.dilated_convs = nn.ModuleList()
+        #self.batch_norms = nn.ModuleList()
         self.crop_layers = nn.ModuleList()
         
         # Calculate the length after first convolution
@@ -63,6 +72,7 @@ class BPNetLightning(pl.LightningModule):
                 padding=0  # Changed to no padding
             )
             self.dilated_convs.append(conv)
+            #self.batch_norms.append(nn.BatchNorm1d(filters))
             
             # Calculate new length after dilated conv
             conv_output_length = calculate_layer_output_length(
@@ -71,7 +81,8 @@ class BPNetLightning(pl.LightningModule):
                 dilation=dilation,
                 padding=0
             )
-            
+            #elf.batch_norms.append(nn.BatchNorm1d(filters))
+
             # Calculate crop size
             crop_size = (current_length - conv_output_length) // 2
     
@@ -94,13 +105,13 @@ class BPNetLightning(pl.LightningModule):
     def forward(self, x):
         x = self.initial_conv(x)
         
+        #for conv, bn, crop_layer in zip(self.dilated_convs, self.batch_norms, self.crop_layers):
         for conv, crop_layer in zip(self.dilated_convs, self.crop_layers):
             # Apply dilated convolution
             conv_x = conv(x)
-            # Crop the residual connection to match conv_x size
+            #conv_x = bn(conv_x)  # Apply batch normalization after the dilated convolution
             x = crop_layer(x)
-            # Add residual connection
-            x = conv_x + x
+            x = conv_x + x #residual connection
         
         # Global average pooling across the sequence length
         x = self.global_avg_pool(x)
@@ -158,8 +169,8 @@ class BPNetLightning(pl.LightningModule):
             self.log(f"{prefix}_{metric_name}", metric_value, on_step=False, on_epoch=True, logger=True)
         
         #try separately calculating weighted mse - maybe thats the issue?
-        weighted_mse = self.eval_metrics["weighted_mse"](y_hat, y)
-        return weighted_mse  
+        loss = self.eval_metrics[self.loss](y_hat, y)
+        return loss  
 
 
     def training_step(self, train_batch, batch_idx):
@@ -172,13 +183,21 @@ class BPNetLightning(pl.LightningModule):
     def validation_step(self, validation_batch, batch_idx):
         x, y = validation_batch 
         y_hat_count = self(x)
-        #loss_count = self.count_loss(y_hat_count, y)
         loss = self.log_metrics(y_hat_count,y,"val")
+        lr = self.optimizers().param_groups[0]['lr']
+        self.log('learning_rate', lr, on_step=False, on_epoch=True, prog_bar=True)
         #self.log('train_loss', loss_count, on_epoch=True, on_step=True, batch_size=y_hat_count.shape[0], prog_bar = True)
         return loss
 
     def configure_optimizers(self):
-        return torch.optim.Adam(self.parameters(), lr=self.hparams.learning_rate)
-
-    def count_loss(self, predictions, targets):
-        return self.mse_loss(predictions, targets)
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.hparams.learning_rate)
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=2, verbose=True)
+        return {
+            "optimizer": optimizer,
+            "lr_scheduler": {
+                "scheduler": scheduler,
+                "monitor": f"val_{self.loss}",  # Replace with the actual metric you want to monitor
+                "interval": "epoch",
+                "frequency": 1,
+            },
+        }

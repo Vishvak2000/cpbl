@@ -50,6 +50,8 @@ def parse_args():
                         help='List for validation chrs')
     parser.add_argument('--seq_focus_len', type=int, default=500,
                         help='Gaussian middle n weighting')
+    parser.add_argument('--loss', type=str, default="mse",
+                        help='Pick the right loss to use')
     parser.add_argument('--use_cpu',type=bool,default=True,
                         help='Using CPU or GPU')
     
@@ -93,7 +95,8 @@ def main():
         "learning_rate": args.learning_rate,
         "train_chrs" : args.train_chrs,
         "valid_chrs" : args.valid_chrs,
-        "seq_focus_len" : args.seq_focus_len
+        "seq_focus_len" : args.seq_focus_len,
+        "loss" : args.loss
     }
 
     wandb_logger = WandbLogger(project=args.project,config=config)

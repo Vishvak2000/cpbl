@@ -8,3 +8,17 @@
 {"time":"2024-10-17T17:52:47.311388378-07:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"y1ix99v5"}}
 {"time":"2024-10-17T17:52:47.756190224-07:00","level":"INFO","msg":"wandb-core","!BADKEY":null}
 {"time":"2024-10-17T17:52:47.757540362-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-10-17T18:49:32.944773927-07:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": net/http: request canceled (Client.Timeout exceeded while awaiting headers)"}
+{"time":"2024-10-17T18:52:47.961200162-07:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": context deadline exceeded (Client.Timeout exceeded while awaiting headers)"}
+{"time":"2024-10-17T18:59:17.974462693-07:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": net/http: request canceled (Client.Timeout exceeded while awaiting headers)"}
+{"time":"2024-10-17T19:28:55.550654251-07:00","level":"INFO","msg":"api: retrying HTTP error","status":500,"url":"https://api.wandb.ai/files/v_vak/chrombpnetL/y1ix99v5/file_stream"}
+{"time":"2024-10-17T19:29:02.825970456-07:00","level":"INFO","msg":"api: retrying HTTP error","status":500,"url":"https://api.wandb.ai/files/v_vak/chrombpnetL/y1ix99v5/file_stream"}
+{"time":"2024-10-17T21:28:48.754317464-07:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/graphql\": net/http: request canceled (Client.Timeout exceeded while awaiting headers)"}
+{"time":"2024-10-17T21:56:07.824553445-07:00","level":"INFO","msg":"stream: closing","id":"y1ix99v5"}
+{"time":"2024-10-17T21:56:07.82458284-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-10-17T21:56:07.824608068-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-10-17T21:56:09.774654873-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-10-17T21:56:10.04815674-07:00","level":"INFO","msg":"handler: closed","stream_id":{"value":"y1ix99v5"}}
+{"time":"2024-10-17T21:56:10.048197186-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":{"value":"y1ix99v5"}}
+{"time":"2024-10-17T21:56:10.048215511-07:00","level":"INFO","msg":"sender: closed","stream_id":{"value":"y1ix99v5"}}
+{"time":"2024-10-17T21:56:10.048242842-07:00","level":"INFO","msg":"stream: closed","id":"y1ix99v5"}

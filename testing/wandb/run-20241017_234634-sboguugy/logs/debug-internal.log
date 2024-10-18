@@ -1,0 +1,18 @@
+{"time":"2024-10-17T23:46:34.524294226-07:00","level":"INFO","msg":"using version","core version":"0.18.3"}
+{"time":"2024-10-17T23:46:34.524309806-07:00","level":"INFO","msg":"created symlink","path":"wandb/run-20241017_234634-sboguugy/logs/debug-core.log"}
+{"time":"2024-10-17T23:46:34.52495453-07:00","level":"ERROR","msg":"dialing: google: could not find default credentials. See https://cloud.google.com/docs/authentication/external/set-up-adc for more information"}
+{"time":"2024-10-17T23:46:34.531359085-07:00","level":"INFO","msg":"created new stream","id":"sboguugy"}
+{"time":"2024-10-17T23:46:34.531389572-07:00","level":"INFO","msg":"stream: started","id":"sboguugy"}
+{"time":"2024-10-17T23:46:34.531397277-07:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"sboguugy"}}
+{"time":"2024-10-17T23:46:34.531408939-07:00","level":"INFO","msg":"sender: started","stream_id":{"value":"sboguugy"}}
+{"time":"2024-10-17T23:46:34.531419328-07:00","level":"INFO","msg":"handler: started","stream_id":{"value":"sboguugy"}}
+{"time":"2024-10-17T23:46:34.88428695-07:00","level":"INFO","msg":"wandb-core","!BADKEY":null}
+{"time":"2024-10-17T23:46:34.885232902-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-10-17T23:46:36.750224976-07:00","level":"INFO","msg":"stream: closing","id":"sboguugy"}
+{"time":"2024-10-17T23:46:36.750260663-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-10-17T23:46:36.750300398-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-10-17T23:46:38.250667362-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-10-17T23:46:38.393611342-07:00","level":"INFO","msg":"handler: closed","stream_id":{"value":"sboguugy"}}
+{"time":"2024-10-17T23:46:38.393675833-07:00","level":"INFO","msg":"sender: closed","stream_id":{"value":"sboguugy"}}
+{"time":"2024-10-17T23:46:38.393669331-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":{"value":"sboguugy"}}
+{"time":"2024-10-17T23:46:38.393781322-07:00","level":"INFO","msg":"stream: closed","id":"sboguugy"}

@@ -1,0 +1,18 @@
+{"time":"2024-10-17T23:50:23.3433615-07:00","level":"INFO","msg":"using version","core version":"0.18.3"}
+{"time":"2024-10-17T23:50:23.343376057-07:00","level":"INFO","msg":"created symlink","path":"wandb/run-20241017_235023-b6c28m5f/logs/debug-core.log"}
+{"time":"2024-10-17T23:50:23.343995304-07:00","level":"ERROR","msg":"dialing: google: could not find default credentials. See https://cloud.google.com/docs/authentication/external/set-up-adc for more information"}
+{"time":"2024-10-17T23:50:23.350251775-07:00","level":"INFO","msg":"created new stream","id":"b6c28m5f"}
+{"time":"2024-10-17T23:50:23.350304755-07:00","level":"INFO","msg":"stream: started","id":"b6c28m5f"}
+{"time":"2024-10-17T23:50:23.350335242-07:00","level":"INFO","msg":"handler: started","stream_id":{"value":"b6c28m5f"}}
+{"time":"2024-10-17T23:50:23.350361181-07:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"b6c28m5f"}}
+{"time":"2024-10-17T23:50:23.350403491-07:00","level":"INFO","msg":"sender: started","stream_id":{"value":"b6c28m5f"}}
+{"time":"2024-10-17T23:50:23.715989239-07:00","level":"INFO","msg":"wandb-core","!BADKEY":null}
+{"time":"2024-10-17T23:50:23.716899004-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-10-18T03:22:41.745896043-07:00","level":"INFO","msg":"stream: closing","id":"b6c28m5f"}
+{"time":"2024-10-18T03:22:41.745927372-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-10-18T03:22:41.745946638-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-10-18T03:22:43.264425548-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-10-18T03:22:43.400987494-07:00","level":"INFO","msg":"handler: closed","stream_id":{"value":"b6c28m5f"}}
+{"time":"2024-10-18T03:22:43.401050784-07:00","level":"INFO","msg":"sender: closed","stream_id":{"value":"b6c28m5f"}}
+{"time":"2024-10-18T03:22:43.401034994-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":{"value":"b6c28m5f"}}
+{"time":"2024-10-18T03:22:43.401227978-07:00","level":"INFO","msg":"stream: closed","id":"b6c28m5f"}

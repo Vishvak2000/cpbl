@@ -32,7 +32,36 @@ class WeightedMSELoss(nn.Module):
         weighted_squared_diff = squared_diff * self.weights
         return torch.mean(weighted_squared_diff)
     
+class WeightedMSELossNorm(nn.Module):
+    def __init__(self, sequence_length, center_size=500, center_weight=10.0, sigma_scale=0.25):
+        super().__init__()
+        self.sequence_length = sequence_length
+        self.center_size = center_size
+        self.center_weight = center_weight
+        self.sigma_scale = sigma_scale
+        self.weights = self._create_weights()
 
+    def _create_weights(self):
+        x = np.arange(self.sequence_length)
+        mu = self.sequence_length / 2
+        sigma = self.center_size * self.sigma_scale
+        
+        # Create Gaussian distribution
+        gaussian = np.exp(-(x - mu)**2 / (2 * sigma**2))
+        
+        # Normalize Gaussian to range [0, 1]
+        gaussian = (gaussian - gaussian.min()) / (gaussian.max() - gaussian.min())
+        
+        # Scale Gaussian to range [1, center_weight]
+        weights = 1 + (self.center_weight - 1) * gaussian
+        
+        return torch.tensor(weights, dtype=torch.float32)
+
+    def forward(self, predictions, targets):
+        squared_diff = (predictions - targets) ** 2
+        weighted_squared_diff = squared_diff * self.weights
+        return torch.mean(weighted_squared_diff)/ self.weights.sum()
+    
 
 class FocusedMSELoss(nn.Module):
     def __init__(self, n):

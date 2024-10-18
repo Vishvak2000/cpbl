@@ -24,3 +24,4 @@ config: {'peak_regions': '/gladstone/corces/lab/users/vishvak/chrombpnet_tutoria
 2024-10-17 17:52:47,895 INFO    MainThread:2393395 [wandb_run.py:_redirect():2403] Redirects installed.
 2024-10-17 17:52:47,898 INFO    MainThread:2393395 [wandb_init.py:init():907] run started, returning control to user process
 2024-10-17 17:52:47,904 INFO    MainThread:2393395 [wandb_run.py:_config_callback():1394] config_cb None None {'filters': 96, 'n_dil_layers': 8, 'conv1_kernel_size': 23, 'dilation_kernel_size': 7, 'sequence_len': 3107, 'out_pred_len': 1500, 'learning_rate': 0.001894, 'dropout_rate': 0.2, 'seq_focus_len': 10}
+2024-10-17 21:56:07,824 WARNING MsgRouterThr:2393395 [router.py:message_loop():77] message_loop has been closed
