@@ -38,15 +38,10 @@ def get_cts(bw, chrom, start, end, output_len):
     return np.nan_to_num(bw.values(chrom, cts_start, cts_end))
 
 
-def load_data(bed_regions, nonpeak_regions, genome_fasta, cts_bw_file):
-    """Load peak and non-peak regions."""
+def load_data(bed_regions, nonpeak_regions):
     peak_df = process_bed(bed_regions)
     nonpeak_df = process_bed(nonpeak_regions)
-    
-    genome = pyfaidx.Fasta(genome_fasta)
-    bw = pyBigWig.open(cts_bw_file)
-    
-    return peak_df, nonpeak_df, genome, bw
+    return peak_df, nonpeak_df
 
 
 
