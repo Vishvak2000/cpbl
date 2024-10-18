@@ -1,0 +1,38 @@
+program: training_script.py
+method: bayes
+metric:
+  goal: minimize
+  name: val_weighted_mse
+parameters:
+  batch_size:
+    values: [64, 128, 256, 512]
+  dilation_kernel_size:
+    max: 9
+    min: 2
+    distribution: int_uniform
+  learning_rate:
+    min: 0.0001
+    max: 0.001
+    distribution: log_uniform_values
+  out_pred_len:
+    values: [1500, 1750, 2000, 2250, 2500]
+  n_dil_layers:
+    max: 11
+    min: 1
+    distribution: int_uniform
+  conv1_kernel_size:
+    max: 15
+    min: 5
+    distribution: int_uniform
+  filters:
+    values: [16,32,64,128,256]
+  input_seq_len:
+    values: [2000, 3000, 4000, 5000, 6000]
+  dropout_rate:
+    min: 0.0
+    max: 0.2
+    distribution: uniform
+
+early_terminate:
+  type: hyperband
+  min_iter: 15

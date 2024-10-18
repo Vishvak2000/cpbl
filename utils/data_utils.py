@@ -7,142 +7,46 @@ from . import one_hot
 
 def process_bed(tsv_path):
     """Read a TSV file, select the first 3 columns, and rename them."""
-    df = pd.read_csv(tsv_path, sep='\t', header=None)
+    df = pd.read_csv(tsv_path, sep='\t', header=None, usecols=[0, 1, 2])
+    df.columns = ['chr', 'start', 'end']
+    print(f"Read in bed file of {df.shape[0]} regions")
+    return df
+
+def get_seq(genome, chrom, start, end, input_len):
+    """Fetch a sequence from the genome ensuring fixed length."""
+    center = (start + end) // 2
+    seq_start = max(0, center - input_len // 2)
+    seq_end = seq_start + input_len
     
-    df_selected = df.iloc[:, :3]
-    df_selected.columns = ['chr', 'start', 'end']
-    print(f"Read in bed file of {df_selected.shape[0]} peaks")
-    return df_selected
-
-def get_seq(peaks_df, genome, input_len):
-    """
-    Fetch sequences from the genome using input_len centered on the regions.
+    # Ensure the sequence length is always equal to input_len
+    sequence = str(genome[chrom][seq_start:seq_end])
+    if len(sequence) < input_len:
+        # Pad the sequence if it's shorter than input_len (in case of edge cases at the chromosome ends)
+        sequence = sequence + 'N' * (input_len - len(sequence))
+    elif len(sequence) > input_len:
+        # Truncate if necessary
+        sequence = sequence[:input_len]
     
-    Args:
-        peaks_df: DataFrame with 'chr', 'start', and 'end' columns.
-        genome: Genome fasta loaded with pyfaidx.
-        input_len: Length of the input sequence to fetch.
+    return sequence
     
-    Returns:
-        One-hot encoded sequences centered on peaks.
-    """
-    vals = []
-    for i, r in peaks_df.iterrows():
-        # Calculate the center of the region
-        center = (r['start'] + r['end']) // 2
-        # Fetch the whole sequence based on input_len centered on peak
-        sequence = str(genome[r['chr']][(center - input_len // 2):(center + input_len // 2)])
-        vals.append(sequence)
+
+def get_cts(bw, chrom, start, end, output_len):
+    """Fetch counts from a bigwig file."""
+    center = (start + end) // 2
+    cts_start = center - output_len // 2
+    cts_end = cts_start + output_len
+    return np.nan_to_num(bw.values(chrom, cts_start, cts_end))
+
+
+def load_data(bed_regions, nonpeak_regions, genome_fasta, cts_bw_file):
+    """Load peak and non-peak regions."""
+    peak_df = process_bed(bed_regions)
+    nonpeak_df = process_bed(nonpeak_regions)
     
-    # Convert sequences to one-hot encoding
-    return one_hot.dna_to_one_hot(vals)
-
-def get_cts(peaks_df, bw, output_len):
-    """
-    Fetch counts from a bigwig bw file, centered at the middle of the peak region.
-    
-    Parameters:
-    peaks_df (DataFrame): DataFrame with 'chr', 'start', and 'end' columns.
-    bw (pyBigWig.BigWigFile): Open bigwig file for retrieving counts.
-    output_len (int): Length of the counts to extract, centered on the peak.
-
-    Returns:
-    np.array: Array of counts centered on each peak.
-    """
-    vals = []
-    for _, r in peaks_df.iterrows():
-        start = int(r['start'])  # Ensure start is an integer
-        end = int(r['end'])      # Ensure end is an integer
-        center = (start + end) // 2  # Compute the center of the region
-
-        # Fetch counts using output_len centered on the peak
-        vals.append(np.nan_to_num(bw.values(r['chr'], 
-                                            center - (output_len // 2),
-                                            center + (output_len // 2))))
-        
-    return np.array(vals)
-
-def get_coords(peaks_df, peaks_bool):
-    """
-    Fetch coordinates for the peaks.
-
-    Args:
-        peaks_df: DataFrame with 'chr', 'start', 'end' columns.
-        peaks_bool: Boolean indicating if these are peaks (1) or non-peaks (0).
-    
-    Returns:
-        Numpy array of coordinates centered on peaks.
-    """
-    vals = []
-    for i, r in peaks_df.iterrows():
-        # Calculate the center and return coordinates
-        center = (r['start'] + r['end']) // 2
-        vals.append([r['chr'], center, "f", peaks_bool])
-
-    return np.array(vals)
-
-def get_seq_cts_coords(peaks_df, genome, bw, input_len, output_len, peaks_bool):
-    """
-    Fetch sequences, counts, and coordinates for a given DataFrame.
-
-    Args:
-        peaks_df: DataFrame containing 'chr', 'start', and 'end' columns.
-        genome: Genome fasta loaded with pyfaidx.
-        bw: BigWig file opened with pyBigWig.
-        input_len: Length of the input sequence to fetch.
-        output_len: Length of the counts to fetch.
-        peaks_bool: Boolean indicating if these are peaks (1) or non-peaks (0).
-    
-    Returns:
-        Tuple containing sequences, counts, and coordinates.
-    """
-    seq = get_seq(peaks_df, genome, input_len)
-    cts = get_cts(peaks_df, bw, output_len)
-    coords = get_coords(peaks_df, peaks_bool)
-    return seq, cts, coords
-
-def load_data(bed_regions, nonpeak_regions, genome_fasta, cts_bw_file, input_len, output_len):
-    """
-    Load sequences and corresponding base-resolution counts for peaks and non-peaks.
-
-    Args:
-        bed_regions: Path to the peak regions BED file.
-        nonpeak_regions: Path to the non-peak regions BED file.
-        genome_fasta: Path to the genome fasta file.
-        cts_bw_file: Path to the counts BigWig file.
-        input_len: Length of the input sequence to fetch.
-        output_len: Length of the counts to fetch.
-
-    Returns:
-        Tuple containing peak and non-peak sequences, counts, and coordinates.
-    """
-    cts_bw = pyBigWig.open(cts_bw_file)
     genome = pyfaidx.Fasta(genome_fasta)
-
-    peak_regions_bed = process_bed(bed_regions).drop_duplicates()
-    non_peak_regions_bed = process_bed(nonpeak_regions).drop_duplicates()
-
-    # Initialize data for peaks and non-peaks
-    train_peaks_seqs, train_peaks_cts, train_peaks_coords = None, None, None
-    train_nonpeaks_seqs, train_nonpeaks_cts, train_nonpeaks_coords = None, None, None
-
-    # Load peak sequences, counts, and coordinates
-    if bed_regions is not None:
-        train_peaks_seqs, train_peaks_cts, train_peaks_coords = get_seq_cts_coords(
-            peak_regions_bed, genome, cts_bw, input_len, output_len, peaks_bool=1
-        )
+    bw = pyBigWig.open(cts_bw_file)
     
-    # Load non-peak sequences, counts, and coordinates
-    if nonpeak_regions is not None:
-        train_nonpeaks_seqs, train_nonpeaks_cts, train_nonpeaks_coords = get_seq_cts_coords(
-            non_peak_regions_bed, genome, cts_bw, input_len, output_len, peaks_bool=0
-        )
+    return peak_df, nonpeak_df, genome, bw
 
-    # Close BigWig and Genome Fasta files
-    cts_bw.close()
-    genome.close()
 
-    return (
-        train_peaks_seqs, train_peaks_cts, train_peaks_coords,
-        train_nonpeaks_seqs, train_nonpeaks_cts, train_nonpeaks_coords
-    )
+

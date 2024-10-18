@@ -2,7 +2,7 @@ import numpy as np
 import pytorch_lightning as pl
 import torch
 from torch import nn
-from utils.losses import multinomial_nll
+from utils.losses import WeightedMSELoss, FocusedMSELoss
 from torch.nn import MSELoss
 from ._base_modules import CNNModule, DilatedConvModule, Cropping1D, GlobalAvgPool1D, Flatten
 from utils.shape_utils import calculate_layer_output_length
@@ -16,20 +16,23 @@ class BPNetLightning(pl.LightningModule):
                  conv1_kernel_size,
                  dilation_kernel_size,
                  sequence_len,
-                 out_pred_len, 
+                 out_pred_len, # can add loss hyperparams here
                  learning_rate,
-                 dropout_rate):
+                 dropout_rate,
+                 seq_focus_len):
         super().__init__()
         self.save_hyperparameters()
 
      
         self.eval_metrics = nn.ModuleDict({
+            "weighted_mse" : WeightedMSELoss(sequence_length=out_pred_len,center_size=seq_focus_len),
+            "focused_mse" : FocusedMSELoss(n=500),
             "mse" : MSELoss(),
-            "kl_divergence" : KLDivergence(),
+            "kl_divergence" : KLDivergence(log_prob=False),
             "explained_variance" : ExplainedVariance(),
             "cosine_similarity" : CosineSimilarity(),
             "mae" : MeanAbsoluteError(),
-            #"r2" : R2Score()
+            "r2" : R2Score()
         })
         
         
@@ -139,22 +142,29 @@ class BPNetLightning(pl.LightningModule):
     def calculate_metrics(self, y_hat, y):
         results = {}
         for metric_name, metric_fn in self.eval_metrics.items():
-            results[metric_name] = metric_fn(y_hat, y)
-
+            if metric_name == "kl_divergence":
+                results[metric_name] = metric_fn((y_hat/y_hat.sum()), (y/y.sum()))
+            if metric_name == "r2":
+                results[metric_name] = metric_fn((y_hat.view(-1)), (y.view(-1)))
+            else:
+                results[metric_name] = metric_fn(y_hat, y)
+        
         return results
-
+    
     def log_metrics(self, y_hat, y, prefix):
         metrics = self.calculate_metrics(y_hat, y)
-    
-        for metric_name, metric_value in metrics.items():
-            self.log(f"{prefix}_{metric_name}", metric_value, on_step=False, on_epoch=True,logger=True)
 
-        return metrics["mse"]
+        for metric_name, metric_value in metrics.items():
+            self.log(f"{prefix}_{metric_name}", metric_value, on_step=False, on_epoch=True, logger=True)
+        
+        #try separately calculating weighted mse - maybe thats the issue?
+        weighted_mse = self.eval_metrics["weighted_mse"](y_hat, y)
+        return weighted_mse  
+
 
     def training_step(self, train_batch, batch_idx):
         x, y = train_batch 
         y_hat_count = self(x)
-        #loss_count = self.count_loss(y_hat_count, y)
         loss = self.log_metrics(y_hat_count,y,"train")
         #self.log('train_loss', loss_count, on_epoch=True, on_step=True, batch_size=y_hat_count.shape[0], prog_bar = True)
         return loss
