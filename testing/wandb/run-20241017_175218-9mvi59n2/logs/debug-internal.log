@@ -1,0 +1,14 @@
+{"time":"2024-10-17T17:52:18.245604374-07:00","level":"INFO","msg":"using version","core version":"0.18.3"}
+{"time":"2024-10-17T17:52:18.245620034-07:00","level":"INFO","msg":"created symlink","path":"wandb/run-20241017_175218-9mvi59n2/logs/debug-core.log"}
+{"time":"2024-10-17T17:52:18.246300648-07:00","level":"ERROR","msg":"dialing: google: could not find default credentials. See https://cloud.google.com/docs/authentication/external/set-up-adc for more information"}
+{"time":"2024-10-17T17:52:18.252558678-07:00","level":"INFO","msg":"created new stream","id":"9mvi59n2"}
+{"time":"2024-10-17T17:52:18.252578746-07:00","level":"INFO","msg":"stream: started","id":"9mvi59n2"}
+{"time":"2024-10-17T17:52:18.252595487-07:00","level":"INFO","msg":"sender: started","stream_id":{"value":"9mvi59n2"}}
+{"time":"2024-10-17T17:52:18.252588294-07:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"9mvi59n2"}}
+{"time":"2024-10-17T17:52:18.252604484-07:00","level":"INFO","msg":"handler: started","stream_id":{"value":"9mvi59n2"}}
+{"time":"2024-10-17T17:52:18.708371373-07:00","level":"INFO","msg":"wandb-core","!BADKEY":null}
+{"time":"2024-10-17T17:52:18.709261062-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-10-17T17:53:54.824294893-07:00","level":"INFO","msg":"stream: closing","id":"9mvi59n2"}
+{"time":"2024-10-17T17:53:54.824343725-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-10-17T17:53:54.824417975-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-10-17T17:53:55.331447513-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}

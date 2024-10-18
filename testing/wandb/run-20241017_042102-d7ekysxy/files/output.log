@@ -1,0 +1,77 @@
+  | Name            | Type            | Params | Mode
+------------------------------------------------------------
+0 | eval_metrics    | ModuleDict      | 0      | train
+1 | initial_conv    | CNNModule       | 12.5 K | train
+2 | dilated_convs   | ModuleList      | 3.6 M  | train
+3 | crop_layers     | ModuleList      | 0      | train
+4 | global_avg_pool | GlobalAvgPool1D | 0      | train
+5 | dropout         | Dropout         | 0      | train
+6 | count_dense     | Linear          | 514 K  | train
+------------------------------------------------------------
+4.1 M     Trainable params
+0         Non-trainable params
+4.1 M     Total params
+16.535    Total estimated model params size (MB)
+60        Modules in train mode
+0         Modules in eval mode
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'filters' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'n_dil_layers' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'conv1_kernel_size' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'dilation_kernel_size' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'out_pred_len' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'learning_rate' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'dropout_rate' was locked by 'sweep' (ignored update).
+/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:424: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=127` in the `DataLoader` to improve performance.
+Sanity Checking DataLoader 0:   0%|                                                                                                      | 0/2 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "training_script.py", line 107, in <module>
+    main()
+  File "training_script.py", line 104, in main
+    trainer.fit(logger_out=wandb_logger)
+  File "/corces/home/vishvak/pytorch_cbp/models/_model.py", line 75, in fit
+    self.trainer.fit(self.model, self.train_dataloader, self.valid_dataloader)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 538, in fit
+    call._call_and_handle_interrupt(
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/call.py", line 47, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 574, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 981, in _run
+    results = self._run_stage()
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 1023, in _run_stage
+    self._run_sanity_check()
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 1052, in _run_sanity_check
+    val_loop.run()
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/loops/utilities.py", line 178, in _decorator
+    return loop_run(self, *args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/loops/evaluation_loop.py", line 135, in run
+    self._evaluation_step(batch, batch_idx, dataloader_idx, dataloader_iter)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/loops/evaluation_loop.py", line 396, in _evaluation_step
+    output = call._call_strategy_hook(trainer, hook_name, *step_args)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/call.py", line 319, in _call_strategy_hook
+    output = fn(*args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/strategies/strategy.py", line 411, in validation_step
+    return self.lightning_module.validation_step(*args, **kwargs)
+  File "/corces/home/vishvak/pytorch_cbp/models/_module.py", line 170, in validation_step
+    y_hat_count = self(x)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/corces/home/vishvak/pytorch_cbp/models/_module.py", line 97, in forward
+    conv_x = conv(x)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/corces/home/vishvak/pytorch_cbp/models/_base_modules.py", line 48, in forward
+    x = self.conv(x)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1553, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/torch/nn/modules/module.py", line 1562, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/torch/nn/modules/conv.py", line 308, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/torch/nn/modules/conv.py", line 304, in _conv_forward
+    return F.conv1d(input, weight, bias, self.stride,
+RuntimeError: Calculated padded input size per channel: (973). Kernel size: (1025). Kernel size can't be greater than actual input size

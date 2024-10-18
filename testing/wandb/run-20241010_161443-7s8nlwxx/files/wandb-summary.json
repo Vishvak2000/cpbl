@@ -1,0 +1,1 @@
+{"_timestamp":1.7286027508001544e+09,"_wandb":{"runtime":668},"val_mse":1350.2098388671875,"epoch":0,"_step":0,"val_kl_divergence":Infinity,"trainer/global_step":277,"val_mae":12.847681999206543,"_runtime":667.047136328,"val_cosine_similarity":21.453630447387695,"val_explained_variance":-0.7443748712539673}

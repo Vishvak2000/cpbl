@@ -1,0 +1,893 @@
+2024-10-15 16:24:15 ERROR 400 response executing GraphQL.
+2024-10-15 16:24:15 ERROR {"errors":[{"message":"Invalid sweep config: invalid hyperparameter configuration: filters","path":["upsertSweep"]}],"data":{"upsertSweep":null}}
+2024-10-15 16:24:15 ERROR Traceback (most recent call last):
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/sdk/internal/internal_api.py", line 347, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/sdk/lib/gql_request.py", line 59, in execute
+    request.raise_for_status()
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/requests/models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.wandb.ai/graphql
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/cli/cli.py", line 108, in wrapper
+    return func(*args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/cli/cli.py", line 1055, in sweep
+    sweep_id, warnings = api.upsert_sweep(
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/apis/internal.py", line 133, in upsert_sweep
+    return self.api.upsert_sweep(*args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/apis/normalize.py", line 73, in wrapper
+    raise err
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/sdk/internal/internal_api.py", line 3287, in upsert_sweep
+    raise e
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/sdk/internal/internal_api.py", line 3281, in upsert_sweep
+    response = self.gql(
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/sdk/internal/internal_api.py", line 319, in gql
+    ret = self._retry_gql(
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/sdk/lib/retry.py", line 147, in __call__
+    retry_timedelta_triggered = check_retry_fn(e)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/util.py", line 881, in no_retry_4xx
+    raise UsageError(body["errors"][0]["message"])
+wandb.errors.errors.UsageError: Invalid sweep config: invalid hyperparameter configuration: filters
+
+2024-10-15 17:32:08 INFO Running runs: []
+2024-10-15 17:32:09 INFO Agent received command: run
+2024-10-15 17:32:09 INFO Agent starting run with config:
+	batch_size: 512
+	conv1_kernel_size: 9
+	dilation_kernel_size: 3
+	dropout_rate: 0.0215771256482602
+	filters: 256
+	input_seq_len: 3000
+	learning_rate: 0.0017049380655222623
+	n_dil_layers: 7
+	out_pred_len: 2250
+2024-10-15 17:32:09 INFO About to run command: /usr/bin/env python training_script.py --batch_size=512 --conv1_kernel_size=9 --dilation_kernel_size=3 --dropout_rate=0.0215771256482602 --filters=256 --input_seq_len=3000 --learning_rate=0.0017049380655222623 --n_dil_layers=7 --out_pred_len=2250
+2024-10-15 17:32:14 INFO Running runs: ['zvrvv5h7']
+2024-10-15 17:32:14 INFO Cleaning up finished run: zvrvv5h7
+2024-10-15 17:32:14 INFO Agent received command: run
+2024-10-15 17:32:14 INFO Agent starting run with config:
+	batch_size: 256
+	conv1_kernel_size: 8
+	dilation_kernel_size: 9
+	dropout_rate: 0.16325108150186146
+	filters: 16
+	input_seq_len: 3000
+	learning_rate: 0.0005861547312413408
+	n_dil_layers: 4
+	out_pred_len: 2000
+2024-10-15 17:32:14 INFO About to run command: /usr/bin/env python training_script.py --batch_size=256 --conv1_kernel_size=8 --dilation_kernel_size=9 --dropout_rate=0.16325108150186146 --filters=16 --input_seq_len=3000 --learning_rate=0.0005861547312413408 --n_dil_layers=4 --out_pred_len=2000
+2024-10-15 17:34:53 INFO Running runs: []
+2024-10-15 17:34:54 INFO Agent received command: run
+2024-10-15 17:34:54 INFO Agent starting run with config:
+	batch_size: 16
+	conv1_kernel_size: 10
+	dilation_kernel_size: 11
+	dropout_rate: 0.026379012184571463
+	filters: 64
+	input_seq_len: 5000
+	learning_rate: 0.005723971801486371
+	n_dil_layers: 4
+	out_pred_len: 2000
+2024-10-15 17:34:54 INFO About to run command: /usr/bin/env python training_script.py --batch_size=16 --conv1_kernel_size=10 --dilation_kernel_size=11 --dropout_rate=0.026379012184571463 --filters=64 --input_seq_len=5000 --learning_rate=0.005723971801486371 --n_dil_layers=4 --out_pred_len=2000
+2024-10-15 17:34:59 INFO Running runs: ['g4kl6w1m']
+2024-10-15 17:34:59 INFO Cleaning up finished run: g4kl6w1m
+2024-10-15 17:35:41 ERROR Traceback (most recent call last):
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/sdk/internal/internal_api.py", line 1077, in sweep
+    raise ValueError(f"Sweep {entity}/{project}/{sweep} not found")
+ValueError: Sweep v_vak/chrombpnetL/2e5zi6xg not found
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/cli/cli.py", line 108, in wrapper
+    return func(*args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/cli/cli.py", line 1846, in agent
+    wandb_agent.agent(sweep_id, entity=entity, project=project, count=count)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/wandb_agent.py", line 572, in agent
+    return run_agent(
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/wandb_agent.py", line 530, in run_agent
+    agent.run()
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/wandb_agent.py", line 192, in run
+    sweep_obj = self._api.sweep(self._sweep_id, "{}")
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/apis/internal.py", line 130, in sweep
+    return self.api.sweep(*args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/apis/normalize.py", line 87, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/apis/normalize.py", line 41, in wrapper
+    return func(*args, **kwargs)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/wandb/sdk/internal/internal_api.py", line 1077, in sweep
+    raise ValueError(f"Sweep {entity}/{project}/{sweep} not found")
+wandb.errors.errors.CommError: Sweep v_vak/chrombpnetL/2e5zi6xg not found
+
+2024-10-15 17:35:58 INFO Running runs: []
+2024-10-15 17:35:58 INFO Agent received command: run
+2024-10-15 17:35:58 INFO Agent starting run with config:
+	batch_size: 128
+	conv1_kernel_size: 8
+	dilation_kernel_size: 9
+	dropout_rate: 0.116542898268114
+	filters: 256
+	input_seq_len: 5000
+	learning_rate: 0.0010598590556660191
+	n_dil_layers: 8
+	out_pred_len: 2500
+2024-10-15 17:35:58 INFO About to run command: /usr/bin/env python training_script.py --batch_size=128 --conv1_kernel_size=8 --dilation_kernel_size=9 --dropout_rate=0.116542898268114 --filters=256 --input_seq_len=5000 --learning_rate=0.0010598590556660191 --n_dil_layers=8 --out_pred_len=2500
+2024-10-15 17:36:03 INFO Running runs: ['u7zxgnrt']
+2024-10-15 17:41:45 INFO Running runs: []
+2024-10-15 17:41:45 INFO Agent received command: run
+2024-10-15 17:41:45 INFO Agent starting run with config:
+	batch_size: 128
+	conv1_kernel_size: 10
+	dilation_kernel_size: 4
+	dropout_rate: 0.11432794270743456
+	filters: 128
+	input_seq_len: 3000
+	learning_rate: 0.0019879579967290767
+	n_dil_layers: 2
+	out_pred_len: 1750
+2024-10-15 17:41:45 INFO About to run command: /usr/bin/env python training_script.py --batch_size=128 --conv1_kernel_size=10 --dilation_kernel_size=4 --dropout_rate=0.11432794270743456 --filters=128 --input_seq_len=3000 --learning_rate=0.0019879579967290767 --n_dil_layers=2 --out_pred_len=1750
+2024-10-15 17:41:50 INFO Running runs: ['l4dtwva1']
+2024-10-15 17:43:40 INFO Running runs: []
+2024-10-15 17:43:40 INFO Agent received command: run
+2024-10-15 17:43:40 INFO Agent starting run with config:
+	batch_size: 16
+	conv1_kernel_size: 10
+	dilation_kernel_size: 4
+	dropout_rate: 0.02021244853455737
+	filters: 32
+	input_seq_len: 6000
+	learning_rate: 0.001402898483116594
+	n_dil_layers: 3
+	out_pred_len: 2000
+2024-10-15 17:43:40 INFO About to run command: /usr/bin/env python training_script.py --batch_size=16 --conv1_kernel_size=10 --dilation_kernel_size=4 --dropout_rate=0.02021244853455737 --filters=32 --input_seq_len=6000 --learning_rate=0.001402898483116594 --n_dil_layers=3 --out_pred_len=2000
+2024-10-15 17:43:45 INFO Running runs: ['pwug5mhf']
+2024-10-15 21:27:49 INFO Running runs: []
+2024-10-15 21:27:49 INFO Agent received command: run
+2024-10-15 21:27:49 INFO Agent starting run with config:
+	batch_size: 64
+	conv1_kernel_size: 12
+	dilation_kernel_size: 4
+	dropout_rate: 0.07472527667081699
+	filters: 16
+	input_seq_len: 6000
+	learning_rate: 0.00010411128547620976
+	n_dil_layers: 8
+	out_pred_len: 2250
+2024-10-15 21:27:50 INFO About to run command: /usr/bin/env python training_script.py --batch_size=64 --conv1_kernel_size=12 --dilation_kernel_size=4 --dropout_rate=0.07472527667081699 --filters=16 --input_seq_len=6000 --learning_rate=0.00010411128547620976 --n_dil_layers=8 --out_pred_len=2250
+2024-10-15 21:27:55 INFO Running runs: ['37mzk5q6']
+2024-10-15 21:27:58 INFO Running runs: []
+2024-10-15 21:27:59 INFO Agent received command: run
+2024-10-15 21:27:59 INFO Agent starting run with config:
+	batch_size: 128
+	conv1_kernel_size: 5
+	dilation_kernel_size: 2
+	dropout_rate: 0.12399311013714276
+	filters: 64
+	input_seq_len: 2000
+	learning_rate: 0.005070802152631792
+	n_dil_layers: 5
+	out_pred_len: 1500
+2024-10-15 21:27:59 INFO About to run command: /usr/bin/env python training_script.py --batch_size=128 --conv1_kernel_size=5 --dilation_kernel_size=2 --dropout_rate=0.12399311013714276 --filters=64 --input_seq_len=2000 --learning_rate=0.005070802152631792 --n_dil_layers=5 --out_pred_len=1500
+2024-10-15 21:28:04 INFO Running runs: ['dd4uj761']
+2024-10-15 21:47:22 INFO Cleaning up finished run: dd4uj761
+2024-10-15 21:47:22 INFO Agent received command: run
+2024-10-15 21:47:22 INFO Agent starting run with config:
+	batch_size: 128
+	conv1_kernel_size: 11
+	dilation_kernel_size: 4
+	dropout_rate: 0.0347316105069621
+	filters: 128
+	input_seq_len: 5000
+	learning_rate: 0.0026657894298481393
+	n_dil_layers: 2
+	out_pred_len: 2500
+2024-10-15 21:47:22 INFO About to run command: /usr/bin/env python training_script.py --batch_size=128 --conv1_kernel_size=11 --dilation_kernel_size=4 --dropout_rate=0.0347316105069621 --filters=128 --input_seq_len=5000 --learning_rate=0.0026657894298481393 --n_dil_layers=2 --out_pred_len=2500
+2024-10-15 21:47:27 INFO Running runs: ['3qfwo7wo']
+2024-10-15 23:06:45 INFO Cleaning up finished run: 37mzk5q6
+2024-10-15 23:06:46 INFO Agent received command: run
+2024-10-15 23:06:46 INFO Agent starting run with config:
+	batch_size: 256
+	conv1_kernel_size: 10
+	dilation_kernel_size: 3
+	dropout_rate: 0.14125597358167766
+	filters: 32
+	input_seq_len: 2000
+	learning_rate: 0.008936800798087993
+	n_dil_layers: 6
+	out_pred_len: 1500
+2024-10-15 23:06:46 INFO About to run command: /usr/bin/env python training_script.py --batch_size=256 --conv1_kernel_size=10 --dilation_kernel_size=3 --dropout_rate=0.14125597358167766 --filters=32 --input_seq_len=2000 --learning_rate=0.008936800798087993 --n_dil_layers=6 --out_pred_len=1500
+2024-10-15 23:06:51 INFO Running runs: ['jq32lfhb']
+2024-10-15 23:16:13 INFO Cleaning up finished run: 3qfwo7wo
+2024-10-15 23:16:14 INFO Agent received command: run
+2024-10-15 23:16:14 INFO Agent starting run with config:
+	batch_size: 128
+	conv1_kernel_size: 7
+	dilation_kernel_size: 6
+	dropout_rate: 0.11345591734342662
+	filters: 128
+	input_seq_len: 5000
+	learning_rate: 0.000594501183703885
+	n_dil_layers: 2
+	out_pred_len: 2000
+2024-10-15 23:16:14 INFO About to run command: /usr/bin/env python training_script.py --batch_size=128 --conv1_kernel_size=7 --dilation_kernel_size=6 --dropout_rate=0.11345591734342662 --filters=128 --input_seq_len=5000 --learning_rate=0.000594501183703885 --n_dil_layers=2 --out_pred_len=2000
+2024-10-15 23:16:19 INFO Running runs: ['s1twbhx7']
+2024-10-15 23:20:57 INFO Cleaning up finished run: jq32lfhb
+2024-10-15 23:20:57 INFO Agent received command: run
+2024-10-15 23:20:57 INFO Agent starting run with config:
+	batch_size: 512
+	conv1_kernel_size: 12
+	dilation_kernel_size: 9
+	dropout_rate: 0.03907491770180709
+	filters: 256
+	input_seq_len: 6000
+	learning_rate: 0.006189774272696644
+	n_dil_layers: 3
+	out_pred_len: 1500
+2024-10-15 23:20:57 INFO About to run command: /usr/bin/env python training_script.py --batch_size=512 --conv1_kernel_size=12 --dilation_kernel_size=9 --dropout_rate=0.03907491770180709 --filters=256 --input_seq_len=6000 --learning_rate=0.006189774272696644 --n_dil_layers=3 --out_pred_len=1500
+2024-10-15 23:21:02 INFO Running runs: ['8ko45py9']
+2024-10-16 05:56:20 INFO Cleaning up finished run: s1twbhx7
+2024-10-16 05:56:21 INFO Agent received command: run
+2024-10-16 05:56:21 INFO Agent starting run with config:
+	batch_size: 512
+	conv1_kernel_size: 11
+	dilation_kernel_size: 2
+	dropout_rate: 0.06627723098682117
+	filters: 64
+	input_seq_len: 5000
+	learning_rate: 0.0007975995886065734
+	n_dil_layers: 3
+	out_pred_len: 1750
+2024-10-16 05:56:21 INFO About to run command: /usr/bin/env python training_script.py --batch_size=512 --conv1_kernel_size=11 --dilation_kernel_size=2 --dropout_rate=0.06627723098682117 --filters=64 --input_seq_len=5000 --learning_rate=0.0007975995886065734 --n_dil_layers=3 --out_pred_len=1750
+2024-10-16 05:56:26 INFO Running runs: ['tkit6bk2']
+2024-10-16 07:17:22 INFO Cleaning up finished run: tkit6bk2
+2024-10-16 07:17:23 INFO Agent received command: run
+2024-10-16 07:17:23 INFO Agent starting run with config:
+	batch_size: 256
+	conv1_kernel_size: 12
+	dilation_kernel_size: 7
+	dropout_rate: 0.09971489226308172
+	filters: 128
+	input_seq_len: 3000
+	learning_rate: 0.0010405270178252325
+	n_dil_layers: 6
+	out_pred_len: 2000
+2024-10-16 07:17:23 INFO About to run command: /usr/bin/env python training_script.py --batch_size=256 --conv1_kernel_size=12 --dilation_kernel_size=7 --dropout_rate=0.09971489226308172 --filters=128 --input_seq_len=3000 --learning_rate=0.0010405270178252325 --n_dil_layers=6 --out_pred_len=2000
+2024-10-16 07:17:28 INFO Running runs: ['w3vu8q8i']
+2024-10-16 08:06:29 ERROR 502 response executing GraphQL.
+2024-10-16 08:06:29 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-16 08:45:55 INFO Cleaning up finished run: w3vu8q8i
+2024-10-16 08:45:56 INFO Agent received command: run
+2024-10-16 08:45:56 INFO Agent starting run with config:
+	batch_size: 128
+	conv1_kernel_size: 10
+	dilation_kernel_size: 3
+	dropout_rate: 0.19064920158196183
+	filters: 128
+	input_seq_len: 3000
+	learning_rate: 0.00012107032647882946
+	n_dil_layers: 1
+	out_pred_len: 2500
+2024-10-16 08:45:56 INFO About to run command: /usr/bin/env python training_script.py --batch_size=128 --conv1_kernel_size=10 --dilation_kernel_size=3 --dropout_rate=0.19064920158196183 --filters=128 --input_seq_len=3000 --learning_rate=0.00012107032647882946 --n_dil_layers=1 --out_pred_len=2500
+2024-10-16 08:46:01 INFO Running runs: ['5skww3pu']
+2024-10-16 09:26:57 ERROR 502 response executing GraphQL.
+2024-10-16 09:26:57 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-16 10:20:33 ERROR 502 response executing GraphQL.
+2024-10-16 10:20:33 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-16 10:28:43 ERROR 502 response executing GraphQL.
+2024-10-16 10:28:43 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-16 11:50:18 ERROR 502 response executing GraphQL.
+2024-10-16 11:50:18 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-16 11:55:07 ERROR 502 response executing GraphQL.
+2024-10-16 11:55:07 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-17 01:29:34 INFO Running runs: []
+2024-10-17 01:29:34 INFO Agent received command: run
+2024-10-17 01:29:34 INFO Agent starting run with config:
+	batch_size: 128
+	conv1_kernel_size: 9
+	dilation_kernel_size: 9
+	dropout_rate: 0.07586890248987901
+	filters: 64
+	input_seq_len: 2000
+	learning_rate: 0.0001648216991689719
+	n_dil_layers: 1
+	out_pred_len: 1500
+2024-10-17 01:29:34 INFO About to run command: /usr/bin/env python training_script.py --batch_size=128 --conv1_kernel_size=9 --dilation_kernel_size=9 --dropout_rate=0.07586890248987901 --filters=64 --input_seq_len=2000 --learning_rate=0.0001648216991689719 --n_dil_layers=1 --out_pred_len=1500
+2024-10-17 01:29:39 INFO Running runs: ['monm3czq']
+2024-10-17 01:32:11 INFO Running runs: []
+2024-10-17 01:32:11 INFO Agent received command: run
+2024-10-17 01:32:11 INFO Agent starting run with config:
+	batch_size: 512
+	conv1_kernel_size: 5
+	dilation_kernel_size: 11
+	dropout_rate: 0.038959557755160294
+	filters: 16
+	input_seq_len: 2000
+	learning_rate: 0.00016574713481931944
+	n_dil_layers: 8
+	out_pred_len: 2250
+2024-10-17 01:32:11 INFO About to run command: /usr/bin/env python training_script.py --batch_size=512 --conv1_kernel_size=5 --dilation_kernel_size=11 --dropout_rate=0.038959557755160294 --filters=16 --input_seq_len=2000 --learning_rate=0.00016574713481931944 --n_dil_layers=8 --out_pred_len=2250
+2024-10-17 01:38:02 INFO Running runs: []
+2024-10-17 01:38:02 INFO Agent received command: run
+2024-10-17 01:38:02 INFO Agent starting run with config:
+	batch_size: 256
+	conv1_kernel_size: 15
+	dilation_kernel_size: 8
+	dropout_rate: 0.03349312539624938
+	filters: 64
+	input_seq_len: 5000
+	learning_rate: 0.0001406535856397868
+	n_dil_layers: 3
+	out_pred_len: 2500
+2024-10-17 01:38:02 INFO About to run command: /usr/bin/env python training_script.py --batch_size=256 --conv1_kernel_size=15 --dilation_kernel_size=8 --dropout_rate=0.03349312539624938 --filters=64 --input_seq_len=5000 --learning_rate=0.0001406535856397868 --n_dil_layers=3 --out_pred_len=2500
+2024-10-17 01:38:07 INFO Running runs: ['m7o8rrl8']
+2024-10-17 01:39:07 INFO Running runs: []
+2024-10-17 01:39:07 INFO Agent received command: run
+2024-10-17 01:39:07 INFO Agent starting run with config:
+	batch_size: 256
+	conv1_kernel_size: 12
+	dilation_kernel_size: 7
+	dropout_rate: 0.11777481726246342
+	filters: 64
+	input_seq_len: 6000
+	learning_rate: 0.0004847896722240026
+	n_dil_layers: 15
+	out_pred_len: 2000
+2024-10-17 01:39:07 INFO About to run command: /usr/bin/env python training_script.py --batch_size=256 --conv1_kernel_size=12 --dilation_kernel_size=7 --dropout_rate=0.11777481726246342 --filters=64 --input_seq_len=6000 --learning_rate=0.0004847896722240026 --n_dil_layers=15 --out_pred_len=2000
+2024-10-17 01:39:12 INFO Running runs: ['uq682had']
+2024-10-17 01:40:47 INFO Running runs: []
+2024-10-17 01:40:48 INFO Agent received command: run
+2024-10-17 01:40:48 INFO Agent starting run with config:
+	batch_size: 256
+	conv1_kernel_size: 13
+	dilation_kernel_size: 2
+	dropout_rate: 0.044942224094885734
+	filters: 16
+	input_seq_len: 5000
+	learning_rate: 0.000842730801239938
+	n_dil_layers: 3
+	out_pred_len: 2000
+2024-10-17 01:40:48 INFO About to run command: /usr/bin/env python training_script.py --batch_size=256 --conv1_kernel_size=13 --dilation_kernel_size=2 --dropout_rate=0.044942224094885734 --filters=16 --input_seq_len=5000 --learning_rate=0.000842730801239938 --n_dil_layers=3 --out_pred_len=2000
+2024-10-17 01:40:53 INFO Running runs: ['sn6t5em5']
+2024-10-17 01:41:37 INFO Running runs: []
+2024-10-17 01:41:38 INFO Agent received command: run
+2024-10-17 01:41:38 INFO Agent starting run with config:
+	batch_size: 512
+	conv1_kernel_size: 10
+	dilation_kernel_size: 15
+	dropout_rate: 0.06955089125217147
+	filters: 64
+	input_seq_len: 4000
+	learning_rate: 0.00026316679622292603
+	n_dil_layers: 3
+	out_pred_len: 2000
+2024-10-17 01:41:38 INFO About to run command: /usr/bin/env python training_script.py --batch_size=512 --conv1_kernel_size=10 --dilation_kernel_size=15 --dropout_rate=0.06955089125217147 --filters=64 --input_seq_len=4000 --learning_rate=0.00026316679622292603 --n_dil_layers=3 --out_pred_len=2000
+2024-10-17 01:41:43 INFO Running runs: ['uu1b5p53']
+2024-10-17 01:44:19 INFO Running runs: []
+2024-10-17 01:44:19 INFO Agent received command: run
+2024-10-17 01:44:19 INFO Agent starting run with config:
+	batch_size: 512
+	conv1_kernel_size: 15
+	dilation_kernel_size: 5
+	dropout_rate: 0.01970469409824778
+	filters: 64
+	input_seq_len: 4000
+	learning_rate: 0.0006375902020090431
+	n_dil_layers: 10
+	out_pred_len: 2000
+2024-10-17 01:44:19 INFO About to run command: /usr/bin/env python training_script.py --batch_size=512 --conv1_kernel_size=15 --dilation_kernel_size=5 --dropout_rate=0.01970469409824778 --filters=64 --input_seq_len=4000 --learning_rate=0.0006375902020090431 --n_dil_layers=10 --out_pred_len=2000
+2024-10-17 01:44:24 INFO Running runs: ['4u7pxo31']
+2024-10-17 01:44:35 INFO Cleaning up finished run: 4u7pxo31
+2024-10-17 01:44:35 INFO Agent received command: run
+2024-10-17 01:44:35 INFO Agent starting run with config:
+	batch_size: 64
+	conv1_kernel_size: 10
+	dilation_kernel_size: 7
+	dropout_rate: 0.045325572508789685
+	filters: 32
+	input_seq_len: 5000
+	learning_rate: 0.00023695597875827005
+	n_dil_layers: 2
+	out_pred_len: 1500
+2024-10-17 01:44:35 INFO About to run command: /usr/bin/env python training_script.py --batch_size=64 --conv1_kernel_size=10 --dilation_kernel_size=7 --dropout_rate=0.045325572508789685 --filters=32 --input_seq_len=5000 --learning_rate=0.00023695597875827005 --n_dil_layers=2 --out_pred_len=1500
+2024-10-17 01:44:40 INFO Running runs: ['97vq2d58']
+2024-10-17 01:44:55 INFO Cleaning up finished run: 97vq2d58
+2024-10-17 01:44:56 INFO Agent received command: run
+2024-10-17 01:44:56 INFO Agent starting run with config:
+	batch_size: 512
+	conv1_kernel_size: 5
+	dilation_kernel_size: 6
+	dropout_rate: 0.03393271216649161
+	filters: 256
+	input_seq_len: 2000
+	learning_rate: 0.000588535206500351
+	n_dil_layers: 9
+	out_pred_len: 1500
+2024-10-17 01:44:56 INFO About to run command: /usr/bin/env python training_script.py --batch_size=512 --conv1_kernel_size=5 --dilation_kernel_size=6 --dropout_rate=0.03393271216649161 --filters=256 --input_seq_len=2000 --learning_rate=0.000588535206500351 --n_dil_layers=9 --out_pred_len=1500
+2024-10-17 01:45:01 INFO Running runs: ['ml8svn7q']
+2024-10-17 01:48:39 INFO Running runs: []
+2024-10-17 01:48:40 INFO Agent received command: run
+2024-10-17 01:48:40 INFO Agent starting run with config:
+	batch_size: 128
+	conv1_kernel_size: 11
+	dilation_kernel_size: 3
+	dropout_rate: 0.17993054278183362
+	filters: 64
+	input_seq_len: 5000
+	learning_rate: 0.0001520265960469598
+	n_dil_layers: 11
+	out_pred_len: 2500
+2024-10-17 01:48:40 INFO About to run command: /usr/bin/env python training_script.py --batch_size=128 --conv1_kernel_size=11 --dilation_kernel_size=3 --dropout_rate=0.17993054278183362 --filters=64 --input_seq_len=5000 --learning_rate=0.0001520265960469598 --n_dil_layers=11 --out_pred_len=2500
+2024-10-17 01:48:45 INFO Running runs: ['vsmj3o8i']
+2024-10-17 01:48:45 INFO Cleaning up finished run: vsmj3o8i
+2024-10-17 01:49:15 INFO Running runs: []
+2024-10-17 01:49:16 INFO Agent received command: run
+2024-10-17 01:49:16 INFO Agent starting run with config:
+	batch_size: 128
+	conv1_kernel_size: 8
+	dilation_kernel_size: 4
+	dropout_rate: 0.19748485359301957
+	filters: 64
+	input_seq_len: 4000
+	learning_rate: 0.00045403740305695155
+	n_dil_layers: 9
+	out_pred_len: 1500
+2024-10-17 01:49:16 INFO About to run command: /usr/bin/env python training_script.py --batch_size=128 --conv1_kernel_size=8 --dilation_kernel_size=4 --dropout_rate=0.19748485359301957 --filters=64 --input_seq_len=4000 --learning_rate=0.00045403740305695155 --n_dil_layers=9 --out_pred_len=1500
+2024-10-17 01:49:21 INFO Running runs: ['c5faljz6']
+2024-10-17 01:50:56 INFO Running runs: []
+2024-10-17 01:50:57 INFO Agent received command: run
+2024-10-17 01:50:57 INFO Agent starting run with config:
+	batch_size: 512
+	conv1_kernel_size: 11
+	dilation_kernel_size: 4
+	dropout_rate: 0.04767059330438894
+	filters: 64
+	input_seq_len: 2000
+	learning_rate: 0.0008026341548058683
+	n_dil_layers: 9
+	out_pred_len: 1500
+2024-10-17 01:50:57 INFO About to run command: /usr/bin/env python training_script.py --batch_size=512 --conv1_kernel_size=11 --dilation_kernel_size=4 --dropout_rate=0.04767059330438894 --filters=64 --input_seq_len=2000 --learning_rate=0.0008026341548058683 --n_dil_layers=9 --out_pred_len=1500
+2024-10-17 01:51:02 INFO Running runs: ['9i74jm07']
+2024-10-17 01:51:17 INFO Cleaning up finished run: 9i74jm07
+2024-10-17 01:51:18 INFO Agent received command: run
+2024-10-17 01:51:18 INFO Agent starting run with config:
+	batch_size: 128
+	conv1_kernel_size: 11
+	dilation_kernel_size: 7
+	dropout_rate: 0.16855090645331774
+	filters: 64
+	input_seq_len: 4000
+	learning_rate: 0.0007045979565123831
+	n_dil_layers: 6
+	out_pred_len: 2250
+2024-10-17 01:51:18 INFO About to run command: /usr/bin/env python training_script.py --batch_size=128 --conv1_kernel_size=11 --dilation_kernel_size=7 --dropout_rate=0.16855090645331774 --filters=64 --input_seq_len=4000 --learning_rate=0.0007045979565123831 --n_dil_layers=6 --out_pred_len=2250
+2024-10-17 01:51:21 INFO Running runs: []
+2024-10-17 01:51:21 INFO Agent received command: run
+2024-10-17 01:51:21 INFO Agent starting run with config:
+	batch_size: 64
+	conv1_kernel_size: 7
+	dilation_kernel_size: 5
+	dropout_rate: 0.002537410606821866
+	filters: 16
+	input_seq_len: 2000
+	learning_rate: 0.0008667825862352046
+	n_dil_layers: 2
+	out_pred_len: 2000
+2024-10-17 01:51:21 INFO About to run command: /usr/bin/env python training_script.py --batch_size=64 --conv1_kernel_size=7 --dilation_kernel_size=5 --dropout_rate=0.002537410606821866 --filters=16 --input_seq_len=2000 --learning_rate=0.0008667825862352046 --n_dil_layers=2 --out_pred_len=2000
+2024-10-17 01:51:23 INFO Running runs: ['2vd60q78']
+2024-10-17 01:51:26 INFO Running runs: ['v9i9m3wz']
+2024-10-17 02:52:04 INFO Cleaning up finished run: c5faljz6
+2024-10-17 02:52:04 INFO Agent received command: run
+2024-10-17 02:52:04 INFO Agent starting run with config:
+	batch_size: 128
+	conv1_kernel_size: 11
+	dilation_kernel_size: 3
+	dropout_rate: 0.17993054278183362
+	filters: 64
+	input_seq_len: 5000
+	learning_rate: 0.0001520265960469598
+	n_dil_layers: 11
+	out_pred_len: 2500
+2024-10-17 02:52:04 INFO About to run command: /usr/bin/env python training_script.py --batch_size=128 --conv1_kernel_size=11 --dilation_kernel_size=3 --dropout_rate=0.17993054278183362 --filters=64 --input_seq_len=5000 --learning_rate=0.0001520265960469598 --n_dil_layers=11 --out_pred_len=2500
+2024-10-17 02:52:09 INFO Running runs: ['f7ec65e8']
+2024-10-17 02:52:26 INFO Cleaning up finished run: f7ec65e8
+2024-10-17 02:52:26 INFO Agent received command: run
+2024-10-17 02:52:26 INFO Agent starting run with config:
+	batch_size: 512
+	conv1_kernel_size: 14
+	dilation_kernel_size: 5
+	dropout_rate: 0.036288435784529983
+	filters: 128
+	input_seq_len: 3000
+	learning_rate: 0.0005420184382197396
+	n_dil_layers: 10
+	out_pred_len: 2500
+2024-10-17 02:52:26 INFO About to run command: /usr/bin/env python training_script.py --batch_size=512 --conv1_kernel_size=14 --dilation_kernel_size=5 --dropout_rate=0.036288435784529983 --filters=128 --input_seq_len=3000 --learning_rate=0.0005420184382197396 --n_dil_layers=10 --out_pred_len=2500
+2024-10-17 02:52:32 INFO Running runs: ['y5vxhg4y']
+2024-10-17 02:52:47 INFO Cleaning up finished run: y5vxhg4y
+2024-10-17 02:52:47 INFO Agent received command: run
+2024-10-17 02:52:47 INFO Agent starting run with config:
+	batch_size: 256
+	conv1_kernel_size: 7
+	dilation_kernel_size: 9
+	dropout_rate: 0.04442753460789961
+	filters: 16
+	input_seq_len: 6000
+	learning_rate: 0.0008155430199264349
+	n_dil_layers: 3
+	out_pred_len: 1750
+2024-10-17 02:52:47 INFO About to run command: /usr/bin/env python training_script.py --batch_size=256 --conv1_kernel_size=7 --dilation_kernel_size=9 --dropout_rate=0.04442753460789961 --filters=16 --input_seq_len=6000 --learning_rate=0.0008155430199264349 --n_dil_layers=3 --out_pred_len=1750
+2024-10-17 02:52:52 INFO Running runs: ['d17dm7rf']
+2024-10-17 03:36:02 INFO Agent received command: stop
+2024-10-17 03:36:02 INFO Stop: d17dm7rf
+2024-10-17 03:36:07 INFO Agent received command: stop
+2024-10-17 03:36:12 INFO Agent received command: stop
+2024-10-17 03:36:18 INFO Agent received command: stop
+2024-10-17 03:36:23 INFO Cleaning up finished run: d17dm7rf
+2024-10-17 03:36:23 INFO Agent received command: run
+2024-10-17 03:36:23 INFO Agent starting run with config:
+	batch_size: 512
+	conv1_kernel_size: 7
+	dilation_kernel_size: 6
+	dropout_rate: 0.034934986679923986
+	filters: 32
+	input_seq_len: 6000
+	learning_rate: 0.000754172244589903
+	n_dil_layers: 6
+	out_pred_len: 2000
+2024-10-17 03:36:23 INFO About to run command: /usr/bin/env python training_script.py --batch_size=512 --conv1_kernel_size=7 --dilation_kernel_size=6 --dropout_rate=0.034934986679923986 --filters=32 --input_seq_len=6000 --learning_rate=0.000754172244589903 --n_dil_layers=6 --out_pred_len=2000
+2024-10-17 03:36:28 INFO Running runs: ['slognz53']
+2024-10-17 03:44:51 ERROR 502 response executing GraphQL.
+2024-10-17 03:44:51 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-17 04:20:55 INFO Cleaning up finished run: 2vd60q78
+2024-10-17 04:20:56 INFO Agent received command: run
+2024-10-17 04:20:56 INFO Agent starting run with config:
+	batch_size: 512
+	conv1_kernel_size: 12
+	dilation_kernel_size: 5
+	dropout_rate: 0.12568668220284043
+	filters: 256
+	input_seq_len: 2000
+	learning_rate: 0.00035870258316249054
+	n_dil_layers: 11
+	out_pred_len: 2000
+2024-10-17 04:20:56 INFO About to run command: /usr/bin/env python training_script.py --batch_size=512 --conv1_kernel_size=12 --dilation_kernel_size=5 --dropout_rate=0.12568668220284043 --filters=256 --input_seq_len=2000 --learning_rate=0.00035870258316249054 --n_dil_layers=11 --out_pred_len=2000
+2024-10-17 04:21:01 INFO Running runs: ['d7ekysxy']
+2024-10-17 04:21:32 INFO Cleaning up finished run: d7ekysxy
+2024-10-17 04:21:32 INFO Agent received command: run
+2024-10-17 04:21:32 INFO Agent starting run with config:
+	batch_size: 256
+	conv1_kernel_size: 13
+	dilation_kernel_size: 8
+	dropout_rate: 0.1387352771382815
+	filters: 128
+	input_seq_len: 5000
+	learning_rate: 0.0008641394996508809
+	n_dil_layers: 6
+	out_pred_len: 2250
+2024-10-17 04:21:32 INFO About to run command: /usr/bin/env python training_script.py --batch_size=256 --conv1_kernel_size=13 --dilation_kernel_size=8 --dropout_rate=0.1387352771382815 --filters=128 --input_seq_len=5000 --learning_rate=0.0008641394996508809 --n_dil_layers=6 --out_pred_len=2250
+2024-10-17 04:21:37 INFO Running runs: ['m7ixcpy6']
+2024-10-17 04:44:35 INFO Cleaning up finished run: slognz53
+2024-10-17 04:44:35 INFO Agent received command: run
+2024-10-17 04:44:35 INFO Agent starting run with config:
+	batch_size: 256
+	conv1_kernel_size: 8
+	dilation_kernel_size: 3
+	dropout_rate: 0.08353355984777462
+	filters: 128
+	input_seq_len: 6000
+	learning_rate: 0.00014937199362587055
+	n_dil_layers: 7
+	out_pred_len: 1500
+2024-10-17 04:44:35 INFO About to run command: /usr/bin/env python training_script.py --batch_size=256 --conv1_kernel_size=8 --dilation_kernel_size=3 --dropout_rate=0.08353355984777462 --filters=128 --input_seq_len=6000 --learning_rate=0.00014937199362587055 --n_dil_layers=7 --out_pred_len=1500
+2024-10-17 04:44:40 INFO Running runs: ['qzazgjqk']
+2024-10-17 06:48:16 ERROR 502 response executing GraphQL.
+2024-10-17 06:48:16 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-17 07:21:18 ERROR 502 response executing GraphQL.
+2024-10-17 07:21:18 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-17 08:02:34 ERROR 502 response executing GraphQL.
+2024-10-17 08:02:34 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-17 08:42:02 ERROR 502 response executing GraphQL.
+2024-10-17 08:42:02 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-17 09:08:01 ERROR 502 response executing GraphQL.
+2024-10-17 09:08:01 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-17 09:21:48 ERROR 502 response executing GraphQL.
+2024-10-17 09:21:48 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-17 09:27:47 INFO Cleaning up finished run: m7ixcpy6
+2024-10-17 09:27:48 INFO Agent received command: run
+2024-10-17 09:27:48 INFO Agent starting run with config:
+	batch_size: 256
+	conv1_kernel_size: 13
+	dilation_kernel_size: 7
+	dropout_rate: 0.183346682851026
+	filters: 64
+	input_seq_len: 4000
+	learning_rate: 0.0005756429842271187
+	n_dil_layers: 4
+	out_pred_len: 2250
+2024-10-17 09:27:48 INFO About to run command: /usr/bin/env python training_script.py --batch_size=256 --conv1_kernel_size=13 --dilation_kernel_size=7 --dropout_rate=0.183346682851026 --filters=64 --input_seq_len=4000 --learning_rate=0.0005756429842271187 --n_dil_layers=4 --out_pred_len=2250
+2024-10-17 09:27:53 INFO Running runs: ['cstccrpe']
+2024-10-17 11:26:03 INFO Agent received command: stop
+2024-10-17 11:26:03 INFO Stop: v9i9m3wz
+2024-10-17 11:26:09 INFO Agent received command: stop
+2024-10-17 11:26:14 INFO Agent received command: stop
+2024-10-17 11:26:19 INFO Agent received command: stop
+2024-10-17 11:26:24 INFO Agent received command: stop
+2024-10-17 11:26:29 INFO Agent received command: stop
+2024-10-17 11:26:34 INFO Agent received command: stop
+2024-10-17 11:26:34 INFO Kill: v9i9m3wz
+2024-10-17 11:26:39 INFO Cleaning up finished run: v9i9m3wz
+2024-10-17 11:26:41 INFO Agent received command: run
+2024-10-17 11:26:41 INFO Agent starting run with config:
+	batch_size: 128
+	conv1_kernel_size: 11
+	dilation_kernel_size: 8
+	dropout_rate: 0.12110962502542932
+	filters: 128
+	input_seq_len: 5000
+	learning_rate: 0.0005779518019226338
+	n_dil_layers: 7
+	out_pred_len: 2250
+2024-10-17 11:26:41 INFO About to run command: /usr/bin/env python training_script.py --batch_size=128 --conv1_kernel_size=11 --dilation_kernel_size=8 --dropout_rate=0.12110962502542932 --filters=128 --input_seq_len=5000 --learning_rate=0.0005779518019226338 --n_dil_layers=7 --out_pred_len=2250
+2024-10-17 11:26:46 INFO Running runs: ['43xwd0mg']
+2024-10-17 13:08:26 INFO Cleaning up finished run: cstccrpe
+2024-10-17 13:08:27 INFO Agent received command: run
+2024-10-17 13:08:27 INFO Agent starting run with config:
+	batch_size: 256
+	conv1_kernel_size: 14
+	dilation_kernel_size: 5
+	dropout_rate: 0.1992061292858532
+	filters: 64
+	input_seq_len: 6000
+	learning_rate: 0.000699772376898267
+	n_dil_layers: 5
+	out_pred_len: 2500
+2024-10-17 13:08:27 INFO About to run command: /usr/bin/env python training_script.py --batch_size=256 --conv1_kernel_size=14 --dilation_kernel_size=5 --dropout_rate=0.1992061292858532 --filters=64 --input_seq_len=6000 --learning_rate=0.000699772376898267 --n_dil_layers=5 --out_pred_len=2500
+2024-10-17 13:08:32 INFO Running runs: ['d8nph30d']
+2024-10-17 14:12:24 ERROR 502 response executing GraphQL.
+2024-10-17 14:12:24 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-17 14:16:52 ERROR 502 response executing GraphQL.
+2024-10-17 14:16:52 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-17 14:18:02 INFO Agent received command: stop
+2024-10-17 14:18:02 INFO Stop: qzazgjqk
+2024-10-17 14:18:07 INFO Agent received command: stop
+2024-10-17 14:18:12 INFO Agent received command: stop
+2024-10-17 14:18:17 INFO Agent received command: stop
+2024-10-17 14:18:22 INFO Cleaning up finished run: qzazgjqk
+2024-10-17 14:18:25 INFO Agent received command: run
+2024-10-17 14:18:25 INFO Agent starting run with config:
+	batch_size: 512
+	conv1_kernel_size: 13
+	dilation_kernel_size: 7
+	dropout_rate: 0.19758378907196616
+	filters: 32
+	input_seq_len: 3000
+	learning_rate: 0.0008369403130090539
+	n_dil_layers: 4
+	out_pred_len: 2250
+2024-10-17 14:18:25 INFO About to run command: /usr/bin/env python training_script.py --batch_size=512 --conv1_kernel_size=13 --dilation_kernel_size=7 --dropout_rate=0.19758378907196616 --filters=32 --input_seq_len=3000 --learning_rate=0.0008369403130090539 --n_dil_layers=4 --out_pred_len=2250
+2024-10-17 14:18:30 INFO Running runs: ['m3e29ir9']
+2024-10-17 14:18:50 INFO Cleaning up finished run: m3e29ir9
+2024-10-17 14:18:51 INFO Agent received command: run
+2024-10-17 14:18:51 INFO Agent starting run with config:
+	batch_size: 128
+	conv1_kernel_size: 13
+	dilation_kernel_size: 7
+	dropout_rate: 0.1653262939153337
+	filters: 64
+	input_seq_len: 5000
+	learning_rate: 0.0005622275213633815
+	n_dil_layers: 4
+	out_pred_len: 2250
+2024-10-17 14:18:51 INFO About to run command: /usr/bin/env python training_script.py --batch_size=128 --conv1_kernel_size=13 --dilation_kernel_size=7 --dropout_rate=0.1653262939153337 --filters=64 --input_seq_len=5000 --learning_rate=0.0005622275213633815 --n_dil_layers=4 --out_pred_len=2250
+2024-10-17 14:18:56 INFO Running runs: ['02h21u7k']
+2024-10-17 15:24:28 ERROR 502 response executing GraphQL.
+2024-10-17 15:24:28 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+
+2024-10-17 16:33:56 INFO Cleaning up finished run: d8nph30d
+2024-10-17 16:33:57 INFO Agent received command: run
+2024-10-17 16:33:57 INFO Agent starting run with config:
+	batch_size: 128
+	conv1_kernel_size: 15
+	dilation_kernel_size: 6
+	dropout_rate: 0.19571629270139196
+	filters: 256
+	input_seq_len: 6000
+	learning_rate: 0.0009591519979086936
+	n_dil_layers: 8
+	out_pred_len: 2500
+2024-10-17 16:33:57 INFO About to run command: /usr/bin/env python training_script.py --batch_size=128 --conv1_kernel_size=15 --dilation_kernel_size=6 --dropout_rate=0.19571629270139196 --filters=256 --input_seq_len=6000 --learning_rate=0.0009591519979086936 --n_dil_layers=8 --out_pred_len=2500
+2024-10-17 16:34:02 INFO Running runs: ['zfy1cq2w']
+2024-10-17 16:48:03 INFO Agent received command: stop
+2024-10-17 16:48:03 INFO Stop: 02h21u7k
+2024-10-17 16:48:08 INFO Agent received command: stop
+2024-10-17 16:48:14 INFO Agent received command: stop
+2024-10-17 16:48:19 INFO Agent received command: stop
+2024-10-17 16:48:24 INFO Agent received command: stop
+2024-10-17 16:48:29 INFO Agent received command: stop
+2024-10-17 16:48:34 INFO Cleaning up finished run: 02h21u7k
+2024-10-17 16:48:34 INFO Agent received command: exit
+2024-10-17 16:48:34 INFO Received exit command. Killing runs and quitting.
+2024-10-17 16:50:18 ERROR 502 response executing GraphQL.
+2024-10-17 16:50:18 ERROR 
+<html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>502 Server Error</title>
+</head>
+<body text=#000000 bgcolor=#ffffff>
+<h1>Error: Server Error</h1>
+<h2>The server encountered a temporary error and could not complete your request.<p>Please try again in 30 seconds.</h2>
+<h2></h2>
+</body></html>
+

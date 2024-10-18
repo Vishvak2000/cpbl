@@ -1,0 +1,263 @@
+  | Name            | Type            | Params | Mode
+------------------------------------------------------------
+0 | eval_metrics    | ModuleDict      | 0      | train
+1 | initial_conv    | CNNModule       | 15.6 K | train
+2 | dilated_convs   | ModuleList      | 3.1 M  | train
+3 | crop_layers     | ModuleList      | 0      | train
+4 | global_avg_pool | GlobalAvgPool1D | 0      | train
+5 | dropout         | Dropout         | 0      | train
+6 | count_dense     | Linear          | 642 K  | train
+------------------------------------------------------------
+3.8 M     Trainable params
+0         Non-trainable params
+3.8 M     Total params
+15.224    Total estimated model params size (MB)
+48        Modules in train mode
+0         Modules in eval mode
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'filters' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'n_dil_layers' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'conv1_kernel_size' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'dilation_kernel_size' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'out_pred_len' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'learning_rate' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'dropout_rate' was locked by 'sweep' (ignored update).
+/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:424: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=127` in the `DataLoader` to improve performance.
+
+Sanity Checking DataLoader 0:  50%|███████████████████████████████████████████████                                               | 1/2 [00:05<00:05,  0.18it/s]
+
+/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:424: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=127` in the `DataLoader` to improve performance.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Epoch 0: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████| 222/222 [1:09:35<00:00,  0.05it/s, v_num=cq2w]
+
+
+
+
+
+
+
+
+
+
+
+
+Validation DataLoader 0:  16%|██▊               | 12/76 [00:44<03:58,  0.27it/s]

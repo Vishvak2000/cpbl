@@ -1,0 +1,20 @@
+wandb_version: 1
+
+batch_size:
+  value: 128
+conv1_kernel_size:
+  value: 10
+dilation_kernel_size:
+  value: 4
+dropout_rate:
+  value: 0.11432794270743456
+filters:
+  value: 128
+input_seq_len:
+  value: 3000
+learning_rate:
+  value: 0.0019879579967290767
+n_dil_layers:
+  value: 2
+out_pred_len:
+  value: 1750

@@ -1,0 +1,18 @@
+{"time":"2024-10-10T16:37:17.991303819-07:00","level":"INFO","msg":"using version","core version":"0.18.3"}
+{"time":"2024-10-10T16:37:17.991530958-07:00","level":"INFO","msg":"created symlink","path":"wandb/run-20241010_163717-tiricyjo/logs/debug-core.log"}
+{"time":"2024-10-10T16:37:17.997678575-07:00","level":"ERROR","msg":"dialing: google: could not find default credentials. See https://cloud.google.com/docs/authentication/external/set-up-adc for more information"}
+{"time":"2024-10-10T16:37:18.06634525-07:00","level":"INFO","msg":"created new stream","id":"tiricyjo"}
+{"time":"2024-10-10T16:37:18.066622764-07:00","level":"INFO","msg":"stream: started","id":"tiricyjo"}
+{"time":"2024-10-10T16:37:18.066689119-07:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"tiricyjo"}}
+{"time":"2024-10-10T16:37:18.066824975-07:00","level":"INFO","msg":"sender: started","stream_id":{"value":"tiricyjo"}}
+{"time":"2024-10-10T16:37:18.066753681-07:00","level":"INFO","msg":"handler: started","stream_id":{"value":"tiricyjo"}}
+{"time":"2024-10-10T16:37:18.995311029-07:00","level":"INFO","msg":"wandb-core","!BADKEY":null}
+{"time":"2024-10-10T16:37:19.010283438-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-10-10T16:48:27.689788138-07:00","level":"INFO","msg":"stream: closing","id":"tiricyjo"}
+{"time":"2024-10-10T16:48:27.69006466-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-10-10T16:48:27.690499781-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-10-10T16:48:29.266354736-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-10-10T16:48:29.464041364-07:00","level":"INFO","msg":"handler: closed","stream_id":{"value":"tiricyjo"}}
+{"time":"2024-10-10T16:48:29.464269324-07:00","level":"INFO","msg":"sender: closed","stream_id":{"value":"tiricyjo"}}
+{"time":"2024-10-10T16:48:29.464216705-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":{"value":"tiricyjo"}}
+{"time":"2024-10-10T16:48:29.465002137-07:00","level":"INFO","msg":"stream: closed","id":"tiricyjo"}

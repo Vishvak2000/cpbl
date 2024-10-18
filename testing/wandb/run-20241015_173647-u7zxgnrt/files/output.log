@@ -1,0 +1,30 @@
+  | Name            | Type            | Params | Mode
+------------------------------------------------------------
+0 | eval_metrics    | ModuleDict      | 0      | train
+1 | initial_conv    | CNNModule       | 8.4 K  | train
+2 | dilated_convs   | ModuleList      | 4.7 M  | train
+3 | crop_layers     | ModuleList      | 0      | train
+4 | global_avg_pool | GlobalAvgPool1D | 0      | train
+5 | dropout         | Dropout         | 0      | train
+6 | count_dense     | Linear          | 642 K  | train
+------------------------------------------------------------
+5.4 M     Trainable params
+0         Non-trainable params
+5.4 M     Total params
+21.486    Total estimated model params size (MB)
+47        Modules in train mode
+0         Modules in eval mode
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'filters' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'n_dil_layers' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'conv1_kernel_size' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'dilation_kernel_size' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'out_pred_len' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'learning_rate' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'dropout_rate' was locked by 'sweep' (ignored update).
+
+
+
+
+
+
+

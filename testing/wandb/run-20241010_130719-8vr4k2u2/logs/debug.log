@@ -1,0 +1,27 @@
+2024-10-10 13:07:19,188 INFO    MainThread:886582 [wandb_setup.py:_flush():79] Current SDK version is 0.18.3
+2024-10-10 13:07:19,189 INFO    MainThread:886582 [wandb_setup.py:_flush():79] Configure stats pid to 886582
+2024-10-10 13:07:19,189 INFO    MainThread:886582 [wandb_setup.py:_flush():79] Loading settings from /corces/home/vishvak/.config/wandb/settings
+2024-10-10 13:07:19,190 INFO    MainThread:886582 [wandb_setup.py:_flush():79] Loading settings from /corces/home/vishvak/pytorch_cbp/testing/wandb/settings
+2024-10-10 13:07:19,190 INFO    MainThread:886582 [wandb_setup.py:_flush():79] Loading settings from environment variables: {}
+2024-10-10 13:07:19,191 INFO    MainThread:886582 [wandb_setup.py:_flush():79] Applying setup settings: {'mode': None, '_disable_service': None}
+2024-10-10 13:07:19,191 INFO    MainThread:886582 [wandb_setup.py:_flush():79] Inferring run settings from compute environment: {'program_relpath': 'testing/training_script.py', 'program_abspath': '/corces/home/vishvak/pytorch_cbp/testing/training_script.py', 'program': 'training_script.py'}
+2024-10-10 13:07:19,192 INFO    MainThread:886582 [wandb_setup.py:_flush():79] Applying login settings: {}
+2024-10-10 13:07:19,193 INFO    MainThread:886582 [wandb_init.py:_log_setup():532] Logging user logs to ./wandb/run-20241010_130719-8vr4k2u2/logs/debug.log
+2024-10-10 13:07:19,194 INFO    MainThread:886582 [wandb_init.py:_log_setup():533] Logging internal logs to ./wandb/run-20241010_130719-8vr4k2u2/logs/debug-internal.log
+2024-10-10 13:07:19,194 INFO    MainThread:886582 [wandb_init.py:init():617] calling init triggers
+2024-10-10 13:07:19,195 INFO    MainThread:886582 [wandb_init.py:init():624] wandb.init called with sweep_config: {}
+config: {}
+2024-10-10 13:07:19,195 INFO    MainThread:886582 [wandb_init.py:init():667] starting backend
+2024-10-10 13:07:19,196 INFO    MainThread:886582 [wandb_init.py:init():671] sending inform_init request
+2024-10-10 13:07:19,220 INFO    MainThread:886582 [backend.py:_multiprocessing_setup():104] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2024-10-10 13:07:19,222 INFO    MainThread:886582 [wandb_init.py:init():684] backend started and connected
+2024-10-10 13:07:19,266 INFO    MainThread:886582 [wandb_init.py:init():779] updated telemetry
+2024-10-10 13:07:19,619 INFO    MainThread:886582 [wandb_init.py:init():812] communicating run to backend with 90.0 second timeout
+2024-10-10 13:07:20,272 INFO    MainThread:886582 [wandb_init.py:init():863] starting run threads in backend
+2024-10-10 13:07:23,170 INFO    MainThread:886582 [wandb_run.py:_console_start():2465] atexit reg
+2024-10-10 13:07:23,172 INFO    MainThread:886582 [wandb_run.py:_redirect():2313] redirect: wrap_raw
+2024-10-10 13:07:23,176 INFO    MainThread:886582 [wandb_run.py:_redirect():2378] Wrapping output streams.
+2024-10-10 13:07:23,178 INFO    MainThread:886582 [wandb_run.py:_redirect():2403] Redirects installed.
+2024-10-10 13:07:23,199 INFO    MainThread:886582 [wandb_init.py:init():907] run started, returning control to user process
+2024-10-10 13:07:23,275 INFO    MainThread:886582 [wandb_run.py:_config_callback():1394] config_cb None None {'filters': 64, 'n_dil_layers': 9, 'conv1_kernel_size': 21, 'dilation_kernel_size': 3, 'sequence_len': 3107, 'out_pred_len': 1000, 'learning_rate': 0.001, 'dropout_rate': 0.0}
+2024-10-10 13:07:26,280 WARNING MsgRouterThr:886582 [router.py:message_loop():77] message_loop has been closed

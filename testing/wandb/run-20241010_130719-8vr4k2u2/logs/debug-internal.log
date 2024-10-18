@@ -1,0 +1,18 @@
+{"time":"2024-10-10T13:07:19.243296287-07:00","level":"INFO","msg":"using version","core version":"0.18.3"}
+{"time":"2024-10-10T13:07:19.243467651-07:00","level":"INFO","msg":"created symlink","path":"wandb/run-20241010_130719-8vr4k2u2/logs/debug-core.log"}
+{"time":"2024-10-10T13:07:19.248930862-07:00","level":"ERROR","msg":"dialing: google: could not find default credentials. See https://cloud.google.com/docs/authentication/external/set-up-adc for more information"}
+{"time":"2024-10-10T13:07:19.331145079-07:00","level":"INFO","msg":"created new stream","id":"8vr4k2u2"}
+{"time":"2024-10-10T13:07:19.331608504-07:00","level":"INFO","msg":"stream: started","id":"8vr4k2u2"}
+{"time":"2024-10-10T13:07:19.33169109-07:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"8vr4k2u2"}}
+{"time":"2024-10-10T13:07:19.331757766-07:00","level":"INFO","msg":"sender: started","stream_id":{"value":"8vr4k2u2"}}
+{"time":"2024-10-10T13:07:19.331787482-07:00","level":"INFO","msg":"handler: started","stream_id":{"value":"8vr4k2u2"}}
+{"time":"2024-10-10T13:07:20.329061796-07:00","level":"INFO","msg":"wandb-core","!BADKEY":null}
+{"time":"2024-10-10T13:07:20.34002005-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-10-10T13:07:26.27946008-07:00","level":"INFO","msg":"stream: closing","id":"8vr4k2u2"}
+{"time":"2024-10-10T13:07:26.279652333-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-10-10T13:07:26.279943312-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-10-10T13:07:27.464686148-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-10-10T13:07:27.652021597-07:00","level":"INFO","msg":"handler: closed","stream_id":{"value":"8vr4k2u2"}}
+{"time":"2024-10-10T13:07:27.652148818-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":{"value":"8vr4k2u2"}}
+{"time":"2024-10-10T13:07:27.652278072-07:00","level":"INFO","msg":"sender: closed","stream_id":{"value":"8vr4k2u2"}}
+{"time":"2024-10-10T13:07:27.652907399-07:00","level":"INFO","msg":"stream: closed","id":"8vr4k2u2"}

@@ -1,0 +1,33 @@
+
+  | Name            | Type            | Params | Mode
+------------------------------------------------------------
+0 | eval_metrics    | ModuleDict      | 0      | train
+1 | initial_conv    | CNNModule       | 5.4 K  | train
+2 | dilated_convs   | ModuleList      | 111 K  | train
+3 | crop_layers     | ModuleList      | 0      | train
+4 | global_avg_pool | GlobalAvgPool1D | 0      | train
+5 | count_dense     | Linear          | 65.0 K | train
+------------------------------------------------------------
+181 K     Trainable params
+0         Non-trainable params
+181 K     Total params
+0.726     Total estimated model params size (MB)
+49        Modules in train mode
+0         Modules in eval mode
+Epoch 20: 100%|████████████████████████████████████████████████████████████████████████████████████| 278/278 [22:39<00:00,  0.20it/s, v_num=54wi]
+Validation DataLoader 0:  18%|██████████████▋                                                                   | 33/185 [02:32<11:43,  0.22it/s]
+Metric val_mse improved. New best score: 1420.701
+Metric val_mse improved by 97.884 >= min_delta = 0.0. New best score: 1322.817
+Metric val_mse improved by 41.240 >= min_delta = 0.0. New best score: 1281.577
+Metric val_mse improved by 11.791 >= min_delta = 0.0. New best score: 1269.786
+Metric val_mse improved by 14.897 >= min_delta = 0.0. New best score: 1254.888
+Metric val_mse improved by 32.912 >= min_delta = 0.0. New best score: 1221.977
+Metric val_mse improved by 14.606 >= min_delta = 0.0. New best score: 1207.370
+Metric val_mse improved by 17.602 >= min_delta = 0.0. New best score: 1189.768
+Metric val_mse improved by 3.859 >= min_delta = 0.0. New best score: 1185.909
+Metric val_mse improved by 18.762 >= min_delta = 0.0. New best score: 1167.148
+Metric val_mse improved by 18.843 >= min_delta = 0.0. New best score: 1148.305
+Metric val_mse improved by 4.522 >= min_delta = 0.0. New best score: 1143.783
+Metric val_mse improved by 22.563 >= min_delta = 0.0. New best score: 1121.219
+
+Detected KeyboardInterrupt, attempting graceful shutdown ...

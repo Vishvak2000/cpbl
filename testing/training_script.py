@@ -12,7 +12,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Training script for CBPLTrainer.')
     
     # Add arguments with default values
-    parser.add_argument('--peak_regions', type=str, default="/gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/test.chr1.chr2.chr3.bed",
+    parser.add_argument('--peak_regions', type=str, default="/gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/test.chr1_to_chr10.no_blacklist.bed",
                         help='Path to peak regions BED file')
     parser.add_argument('--nonpeak_regions', type=str, default="/gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/test.chr1.negatives.adjusted.bed",
                         help='Path to non-peak regions BED file')
@@ -44,6 +44,12 @@ def parse_args():
                         help='Learning rate for the optimizer')
     parser.add_argument('--project', type=str, default="chrombpnetL",
                         help='Project name for wandb')
+    parser.add_argument('--train_chrs', type=list, default=["chr1","chr2","chr3","chr4","chr5"],
+                        help='List for training chrs')
+    parser.add_argument('--valid_chrs', type=list, default=["chr6","chr7"],
+                        help='List for validation chrs')
+    parser.add_argument('--seq_focus_len', type=int, default=500,
+                        help='Gaussian middle n weighting')
     parser.add_argument('--use_cpu',type=bool,default=True,
                         help='Using CPU or GPU')
     
@@ -53,12 +59,11 @@ def main():
     # Parse command-line arguments
     args = parse_args()
    
-    wandb_logger = WandbLogger(project=args.project)
 
     # Set the number of threads to use (30% of available CPU cores)
     if args.use_cpu:
         total_cores = os.cpu_count()
-        num_cores_to_use = max(1, int(total_cores * 1))  # Ensure at least one core is used
+        num_cores_to_use = max(1, int(total_cores * 0.3))  # Ensure at least one core is used
         torch.set_num_threads(num_cores_to_use)
 
     # Add the parent directory to the Python path
@@ -85,8 +90,14 @@ def main():
         "input_seq_len": args.input_seq_len,
         "out_pred_len": args.out_pred_len,
         "dropout_rate": args.dropout_rate,
-        "learning_rate": args.learning_rate
+        "learning_rate": args.learning_rate,
+        "train_chrs" : args.train_chrs,
+        "valid_chrs" : args.valid_chrs,
+        "seq_focus_len" : args.seq_focus_len
     }
+
+    wandb_logger = WandbLogger(project=args.project,config=config)
+
 
     trainer = CBPLTrainer(config)
 

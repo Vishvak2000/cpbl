@@ -29,9 +29,11 @@ class CBPLTrainer:
 
         # Create data loaders
         self.train_dataloader, self.valid_dataloader = self.dataset.split(
-            train_size=config["train_size"], 
-            batch_size=config["batch_size"]
-        )
+            #train_size=config["train_size"], 
+            batch_size=config["batch_size"],
+            train_chrs=config["train_chrs"],
+            valid_chrs=config["valid_chrs"]
+            )
 
         # Instantiate the model
         self.model = BPNetLightning(
@@ -42,7 +44,8 @@ class CBPLTrainer:
             sequence_len=config["input_seq_len"],
             out_pred_len=config["out_pred_len"],
             learning_rate=config["learning_rate"],
-            dropout_rate = config["dropout_rate"]
+            dropout_rate = config["dropout_rate"],
+            seq_focus_len=config["seq_focus_len"]
         )
     
 
@@ -52,14 +55,14 @@ class CBPLTrainer:
         
     def fit(self, max_epochs: int = 50,
             batch_size: int = 128,
-            early_stopping_patience: int = 10,
-            train_size: Optional[float] = 0.9,
+            early_stopping_patience: int = 3,
+            #train_size: Optional[float] = 0.9,
             check_val_every_n_epoch: Optional[Union[int, float]] = 1,
             save_path: Optional[str] = None,
             logger_out: Optional[WandbLogger] = None,
             gpus = None):
         
-        es_callback = EarlyStopping(monitor='validation_loss', patience=early_stopping_patience, verbose=True, mode='min')
+        es_callback = EarlyStopping(monitor='val_weighted_mse', patience=early_stopping_patience, verbose=True, mode='min')
 
         self.trainer = pl.Trainer(max_epochs=max_epochs,
                                   #accelerator='gpu' if torch.cuda.is_available() else 'cpu',

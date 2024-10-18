@@ -1,0 +1,42 @@
+
+  | Name            | Type            | Params | Mode
+------------------------------------------------------------
+0 | eval_metrics    | ModuleDict      | 0      | train
+1 | initial_conv    | CNNModule       | 8.9 K  | train
+2 | dilated_convs   | ModuleList      | 516 K  | train
+3 | crop_layers     | ModuleList      | 0      | train
+4 | global_avg_pool | GlobalAvgPool1D | 0      | train
+5 | dropout         | Dropout         | 0      | train
+6 | count_dense     | Linear          | 145 K  | train
+------------------------------------------------------------
+671 K     Trainable params
+0         Non-trainable params
+671 K     Total params
+2.685     Total estimated model params size (MB)
+49        Modules in train mode
+0         Modules in eval mode
+Epoch 0:  11%|████████                                                                    | 126/1182 [00:38<05:18,  3.31it/s, v_num=o6lc]
+/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:424: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=127` in the `DataLoader` to improve performance.
+/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:424: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=127` in the `DataLoader` to improve performance.
+
+Detected KeyboardInterrupt, attempting graceful shutdown ...
+Traceback (most recent call last):
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/multiprocessing/queues.py", line 245, in _feed
+    send_bytes(obj)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/multiprocessing/connection.py", line 411, in _send_bytes
+    self._send(header + buf)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/multiprocessing/connection.py", line 368, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/multiprocessing/queues.py", line 245, in _feed
+    send_bytes(obj)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/multiprocessing/connection.py", line 200, in send_bytes
+    self._send_bytes(m[offset:offset + size])
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/multiprocessing/connection.py", line 411, in _send_bytes
+    self._send(header + buf)
+  File "/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/multiprocessing/connection.py", line 368, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe

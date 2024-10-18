@@ -1,0 +1,51 @@
+  | Name            | Type            | Params | Mode
+------------------------------------------------------------
+0 | eval_metrics    | ModuleDict      | 0      | train
+1 | initial_conv    | CNNModule       | 2.4 K  | train
+2 | dilated_convs   | ModuleList      | 36.9 K | train
+3 | crop_layers     | ModuleList      | 0      | train
+4 | global_avg_pool | GlobalAvgPool1D | 0      | train
+5 | dropout         | Dropout         | 0      | train
+6 | count_dense     | Linear          | 97.5 K | train
+------------------------------------------------------------
+136 K     Trainable params
+0         Non-trainable params
+136 K     Total params
+0.547     Total estimated model params size (MB)
+20        Modules in train mode
+0         Modules in eval mode
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'filters' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'n_dil_layers' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'conv1_kernel_size' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'dilation_kernel_size' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'out_pred_len' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'learning_rate' was locked by 'sweep' (ignored update).
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'dropout_rate' was locked by 'sweep' (ignored update).
+/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:424: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=127` in the `DataLoader` to improve performance.
+/corces/home/vishvak/miniforge3/envs/chrombpnet/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:424: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=127` in the `DataLoader` to improve performance.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Epoch 0:  97%|████████████████████████████████████████████████████████████████████████████████████████████████▎  | 216/222 [00:47<00:01,  4.57it/s, v_num=3czq]
+Epoch 0: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████| 222/222 [00:48<00:00,  4.58it/s, v_num=3czq]
+Validation DataLoader 0:   1%|█▎                                                                                                | 1/76 [00:00<00:04, 16.23it/s]

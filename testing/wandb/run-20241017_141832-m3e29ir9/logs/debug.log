@@ -1,0 +1,28 @@
+2024-10-17 14:18:32,927 INFO    MainThread:2341383 [wandb_setup.py:_flush():79] Current SDK version is 0.18.3
+2024-10-17 14:18:32,927 INFO    MainThread:2341383 [wandb_setup.py:_flush():79] Configure stats pid to 2341383
+2024-10-17 14:18:32,927 INFO    MainThread:2341383 [wandb_setup.py:_flush():79] Loading settings from /corces/home/vishvak/.config/wandb/settings
+2024-10-17 14:18:32,927 INFO    MainThread:2341383 [wandb_setup.py:_flush():79] Loading settings from /corces/home/vishvak/pytorch_cbp/testing/wandb/settings
+2024-10-17 14:18:32,927 INFO    MainThread:2341383 [wandb_setup.py:_flush():79] Loading settings from environment variables: {'_require_legacy_service': 'true', 'entity': 'v_vak', 'project': 'chrombpnetL', 'sweep_id': 'u6wijge9', 'root_dir': '/corces/home/vishvak/pytorch_cbp/testing', 'run_id': 'm3e29ir9', 'sweep_param_path': '/corces/home/vishvak/pytorch_cbp/testing/wandb/sweep-u6wijge9/config-m3e29ir9.yaml'}
+2024-10-17 14:18:32,927 INFO    MainThread:2341383 [wandb_setup.py:_flush():79] Applying setup settings: {'mode': None, '_disable_service': None}
+2024-10-17 14:18:32,927 INFO    MainThread:2341383 [wandb_setup.py:_flush():79] Inferring run settings from compute environment: {'program_relpath': 'testing/training_script.py', 'program_abspath': '/corces/home/vishvak/pytorch_cbp/testing/training_script.py', 'program': 'training_script.py'}
+2024-10-17 14:18:32,927 INFO    MainThread:2341383 [wandb_setup.py:_flush():79] Applying login settings: {}
+2024-10-17 14:18:32,927 INFO    MainThread:2341383 [wandb_init.py:_log_setup():532] Logging user logs to ./wandb/run-20241017_141832-m3e29ir9/logs/debug.log
+2024-10-17 14:18:32,927 INFO    MainThread:2341383 [wandb_init.py:_log_setup():533] Logging internal logs to ./wandb/run-20241017_141832-m3e29ir9/logs/debug-internal.log
+2024-10-17 14:18:32,927 INFO    MainThread:2341383 [wandb_init.py:init():617] calling init triggers
+2024-10-17 14:18:32,927 INFO    MainThread:2341383 [wandb_init.py:init():624] wandb.init called with sweep_config: {'batch_size': 512, 'conv1_kernel_size': 13, 'dilation_kernel_size': 7, 'dropout_rate': 0.19758378907196616, 'filters': 32, 'input_seq_len': 3000, 'learning_rate': 0.0008369403130090539, 'n_dil_layers': 4, 'out_pred_len': 2250}
+config: {'peak_regions': '/gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/test.chr1_to_chr10.no_blacklist.bed', 'nonpeak_regions': '/gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/test.chr1.negatives.adjusted.bed', 'genome_fasta': '/gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/data/downloads/hg38.fa', 'cts_bw_file': '/gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/ENCFF735AHG.bigWig', 'negative_sampling_ratio': 0, 'train_size': 0.6, 'batch_size': 512, 'filters': 32, 'n_dil_layers': 4, 'conv1_kernel_size': 13, 'dilation_kernel_size': 7, 'input_seq_len': 3000, 'out_pred_len': 2250, 'dropout_rate': 0.19758378907196616, 'learning_rate': 0.0008369403130090539, 'train_chrs': ['chr1', 'chr2', 'chr3', 'chr4', 'chr5'], 'valid_chrs': ['chr6', 'chr7']}
+2024-10-17 14:18:32,928 INFO    MainThread:2341383 [wandb_init.py:init():667] starting backend
+2024-10-17 14:18:32,928 INFO    MainThread:2341383 [wandb_init.py:init():671] sending inform_init request
+2024-10-17 14:18:32,935 INFO    MainThread:2341383 [backend.py:_multiprocessing_setup():104] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2024-10-17 14:18:32,935 INFO    MainThread:2341383 [wandb_init.py:init():684] backend started and connected
+2024-10-17 14:18:32,945 INFO    MainThread:2341383 [wandb_run.py:_config_callback():1394] config_cb None None {'batch_size': 512, 'conv1_kernel_size': 13, 'dilation_kernel_size': 7, 'dropout_rate': 0.19758378907196616, 'filters': 32, 'input_seq_len': 3000, 'learning_rate': 0.0008369403130090539, 'n_dil_layers': 4, 'out_pred_len': 2250}
+2024-10-17 14:18:32,948 INFO    MainThread:2341383 [wandb_init.py:init():779] updated telemetry
+2024-10-17 14:18:32,989 INFO    MainThread:2341383 [wandb_init.py:init():812] communicating run to backend with 90.0 second timeout
+2024-10-17 14:18:33,474 INFO    MainThread:2341383 [wandb_init.py:init():863] starting run threads in backend
+2024-10-17 14:18:37,634 INFO    MainThread:2341383 [wandb_run.py:_console_start():2465] atexit reg
+2024-10-17 14:18:37,635 INFO    MainThread:2341383 [wandb_run.py:_redirect():2313] redirect: wrap_raw
+2024-10-17 14:18:37,636 INFO    MainThread:2341383 [wandb_run.py:_redirect():2378] Wrapping output streams.
+2024-10-17 14:18:37,636 INFO    MainThread:2341383 [wandb_run.py:_redirect():2403] Redirects installed.
+2024-10-17 14:18:37,640 INFO    MainThread:2341383 [wandb_init.py:init():907] run started, returning control to user process
+2024-10-17 14:18:37,647 INFO    MainThread:2341383 [wandb_run.py:_config_callback():1394] config_cb None None {'sequence_len': 3000}
+2024-10-17 14:18:46,223 WARNING MsgRouterThr:2341383 [router.py:message_loop():77] message_loop has been closed

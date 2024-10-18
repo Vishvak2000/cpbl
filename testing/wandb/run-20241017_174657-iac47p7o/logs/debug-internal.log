@@ -1,0 +1,18 @@
+{"time":"2024-10-17T17:46:57.631252478-07:00","level":"INFO","msg":"using version","core version":"0.18.3"}
+{"time":"2024-10-17T17:46:57.631267246-07:00","level":"INFO","msg":"created symlink","path":"wandb/run-20241017_174657-iac47p7o/logs/debug-core.log"}
+{"time":"2024-10-17T17:46:57.631982235-07:00","level":"ERROR","msg":"dialing: google: could not find default credentials. See https://cloud.google.com/docs/authentication/external/set-up-adc for more information"}
+{"time":"2024-10-17T17:46:57.640676452-07:00","level":"INFO","msg":"created new stream","id":"iac47p7o"}
+{"time":"2024-10-17T17:46:57.640708964-07:00","level":"INFO","msg":"stream: started","id":"iac47p7o"}
+{"time":"2024-10-17T17:46:57.640721688-07:00","level":"INFO","msg":"handler: started","stream_id":{"value":"iac47p7o"}}
+{"time":"2024-10-17T17:46:57.640720966-07:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"iac47p7o"}}
+{"time":"2024-10-17T17:46:57.640730114-07:00","level":"INFO","msg":"sender: started","stream_id":{"value":"iac47p7o"}}
+{"time":"2024-10-17T17:46:58.065520159-07:00","level":"INFO","msg":"wandb-core","!BADKEY":null}
+{"time":"2024-10-17T17:46:58.066612089-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-10-17T17:46:58.429800344-07:00","level":"INFO","msg":"stream: closing","id":"iac47p7o"}
+{"time":"2024-10-17T17:46:58.429832094-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-10-17T17:46:58.429870356-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-10-17T17:47:00.206759401-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-10-17T17:47:00.360026367-07:00","level":"INFO","msg":"handler: closed","stream_id":{"value":"iac47p7o"}}
+{"time":"2024-10-17T17:47:00.360064438-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":{"value":"iac47p7o"}}
+{"time":"2024-10-17T17:47:00.360084586-07:00","level":"INFO","msg":"sender: closed","stream_id":{"value":"iac47p7o"}}
+{"time":"2024-10-17T17:47:00.360118701-07:00","level":"INFO","msg":"stream: closed","id":"iac47p7o"}

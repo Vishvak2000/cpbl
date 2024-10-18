@@ -1,0 +1,52 @@
+{
+  "os":  "Linux-4.18.0-553.8.1.el8_10.x86_64-x86_64-with-glibc2.17",
+  "python":  "3.8.20",
+  "startedAt":  "2024-10-18T00:48:49.269396Z",
+  "args":  [
+    "--n_dil_layers",
+    "8",
+    "--conv1_kernel_size",
+    "23",
+    "--learning_rate",
+    "0.001894",
+    "--out_pred_len",
+    "1500",
+    "--dilation_kernel_size",
+    "7",
+    "--filters",
+    "96",
+    "--batch_size",
+    "24",
+    "--dropout_rate",
+    "0.2",
+    "--seq_focus_len",
+    "10"
+  ],
+  "program":  "training_script.py",
+  "codePath":  "testing/training_script.py",
+  "git":  {
+    "remote":  "https://github.com/Vishvak2000/cpbl.git",
+    "commit":  "51ada25b28b501420045ba68e5bf734ab8dd9536"
+  },
+  "email":  "vishvak.subramanyam@ucsf.edu",
+  "root":  ".",
+  "host":  "pelayo.gladstone.internal",
+  "username":  "vishvak",
+  "executable":  "/corces/home/vishvak/miniforge3/envs/chrombpnet/bin/python",
+  "codePathLocal":  "training_script.py",
+  "cpu_count":  64,
+  "cpu_count_logical":  128,
+  "disk":  {
+    "/":  {
+      "total":  "471645552640",
+      "used":  "299271450624"
+    }
+  },
+  "memory":  {
+    "total":  "540055658496"
+  },
+  "cpu":  {
+    "count":  64,
+    "countLogical":  128
+  }
+}

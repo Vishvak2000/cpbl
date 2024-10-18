@@ -1,8 +1,7 @@
 import torch
 from torch.utils.data import Dataset, DataLoader, SubsetRandomSampler
 import numpy as np
-from utils import data_utils
-import logging
+from utils import data_utils, one_hot
 import multiprocessing
 
 class ChromatinDataset(Dataset):
@@ -13,56 +12,64 @@ class ChromatinDataset(Dataset):
                  cts_bw_file, 
                  input_len, 
                  output_len, 
-                 #max_jitter, 
                  negative_sampling_ratio):
-        # Load data using the provided utility function
-        self.peak_seqs, self.peak_cts, self.peak_coords, self.nonpeak_seqs, self.nonpeak_cts, self.nonpeak_coords = data_utils.load_data(
-            peak_regions, nonpeak_regions, genome_fasta, cts_bw_file, input_len, output_len
+        self.input_len = input_len
+        self.output_len = output_len
+        self.negative_sampling_ratio = negative_sampling_ratio
+
+        # Load data
+        self.peak_df, self.nonpeak_df, self.genome, self.bw = data_utils.load_data(
+            peak_regions, nonpeak_regions, genome_fasta, cts_bw_file
         )
-
         
-        # Sample nonpeak data
-        self.sample_nonpeak_data(negative_sampling_ratio)
+        self.n_peaks = len(self.peak_df)
+        self.n_nonpeaks = int(self.n_peaks * negative_sampling_ratio)
         
-        print(f"Successfully loaded in data with {len(self.peak_seqs)} positive and {len(self.sampled_nonpeak_seqs)} nonpeak regions!")
-
-        # Concatenate peak and nonpeak data
-        self.seqs = np.vstack([self.peak_seqs, self.sampled_nonpeak_seqs])
-        self.cts = np.vstack([self.peak_cts, self.sampled_nonpeak_cts])
-        self.coords = np.vstack([self.peak_coords, self.sampled_nonpeak_coords])
-        
-        # Convert to torch tensors
-        self.seqs = torch.tensor(self.seqs, dtype=torch.float32).permute(0,2,1)
-        self.cts = torch.tensor(self.cts, dtype=torch.float32)
-
-    def sample_nonpeak_data(self, ratio):
-        num_samples = int(ratio * len(self.peak_seqs))
-        num_samples = min(num_samples, len(self.nonpeak_seqs)) # for smaller datasets
-        indices = np.random.choice(len(self.nonpeak_seqs), size=num_samples, replace=False)
-        self.sampled_nonpeak_seqs = self.nonpeak_seqs[indices]
-        self.sampled_nonpeak_cts = self.nonpeak_cts[indices]
-        self.sampled_nonpeak_coords = self.nonpeak_coords[indices]
+        print(f"Loaded {self.n_peaks} peak regions and {self.n_nonpeaks} non-peak regions")
 
     def __len__(self):
-        return len(self.seqs)
+        return self.n_peaks + self.n_nonpeaks
 
     def __getitem__(self, idx):
-        return self.seqs[idx], self.cts[idx]
+        if idx < self.n_peaks:
+            row = self.peak_df.iloc[idx]
+            label = 1
+        else:
+            row = self.nonpeak_df.iloc[np.random.randint(len(self.nonpeak_df))]
+            label = 0
 
-    def split(self, train_size: float, batch_size: int):
-        n_samples = len(self.seqs)
+        seq = data_utils.get_seq(self.genome, row['chr'], row['start'], row['end'], self.input_len)
+        seq_one_hot = one_hot.dna_to_one_hot([seq])[0]  # Pass as list and take first element
+        cts = data_utils.get_cts(self.bw, row['chr'], row['start'], row['end'], self.output_len)
 
-        indices = np.arange(n_samples)
-        np.random.shuffle(indices)
+        #print(f"seq_shape {seq_one_hot.shape}")
+        #print(f"cts_shape {cts.shape}")
 
-        train_indices = indices[:int(train_size * n_samples)]
-        valid_indices = indices[int(train_size * n_samples):]
+        return (torch.tensor(seq_one_hot, dtype=torch.float32).permute(1, 0),
+                torch.tensor(cts, dtype=torch.float32))
+                #torch.tensor(label, dtype=torch.float32))
 
-        train_dataloader = DataLoader(self, sampler=SubsetRandomSampler(train_indices),
-                                      num_workers=max(1, min(6, multiprocessing.cpu_count() // 2)), pin_memory=False,
-                                      batch_size=batch_size)
-        valid_dataloader = DataLoader(self, sampler=SubsetRandomSampler(valid_indices),
-                                      num_workers=max(1, min(6, multiprocessing.cpu_count() // 2)), pin_memory=False,
-                                      batch_size=batch_size)
+    def split(self, train_chrs: list, valid_chrs: list, batch_size: int):
+        train_indices = self.peak_df[self.peak_df['chr'].isin(train_chrs)].index.tolist()
+        train_indices += list(range(self.n_peaks, len(self)))
+        
+        valid_indices = self.peak_df[self.peak_df['chr'].isin(valid_chrs)].index.tolist()
+
+        train_sampler = SubsetRandomSampler(train_indices)
+        valid_sampler = SubsetRandomSampler(valid_indices)
+
+        train_dataloader = DataLoader(self, sampler=train_sampler,
+                                      num_workers=1,
+                                      pin_memory=False, batch_size=batch_size)
+        valid_dataloader = DataLoader(self, sampler=valid_sampler,
+                                      num_workers=1,
+                                      pin_memory=False, batch_size=batch_size)
 
         return train_dataloader, valid_dataloader
+
+    def __del__(self):
+        # Close the BigWig file when the dataset object is deleted
+        if hasattr(self, 'bw'):
+            self.bw.close()
+        if hasattr(self, 'genome'):
+            self.genome.close()
