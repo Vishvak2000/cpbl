@@ -15,7 +15,7 @@ parameters:
     max: 0.001
     distribution: log_uniform_values
   out_pred_len:
-    values: [1500, 1750, 2000, 2250, 2500]
+    values: [750]
   n_dil_layers:
     max: 11
     min: 1

@@ -7,13 +7,10 @@ from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint, TQDMProg
 from typing import Optional, Union
 from utils.shape_utils import calculate_required_input_length
 from pytorch_lightning.loggers import WandbLogger
-
-
-
 import os
 
 class CBPLTrainer:
-    def __init__(self,config):
+    def __init__(self, config, checkpoint_path: Optional[str] = None):
         self.config = config
 
         # Load the dataset
@@ -29,57 +26,89 @@ class CBPLTrainer:
 
         # Create data loaders
         self.train_dataloader, self.valid_dataloader = self.dataset.split(
-            #train_size=config["train_size"], 
             batch_size=config["batch_size"],
             train_chrs=config["train_chrs"],
             valid_chrs=config["valid_chrs"]
+        )
+
+        # Instantiate or load the model
+        if checkpoint_path is not None:
+            print(f"Loading model from checkpoint: {checkpoint_path}")
+            self.model = BPNetLightning.load_from_checkpoint(
+                checkpoint_path,
+                filters=config["filters"],
+                n_dil_layers=config["n_dil_layers"],
+                conv1_kernel_size=config["conv1_kernel_size"],
+                dilation_kernel_size=config["dilation_kernel_size"],
+                sequence_len=config["input_seq_len"],
+                out_pred_len=config["out_pred_len"],
+                learning_rate=config["learning_rate"],
+                dropout_rate=config["dropout_rate"],
+                seq_focus_len=config["seq_focus_len"],
+                loss=config["loss"],
+                use_attention_pooling=config["use_attention_pooling"]
+            )
+        else:
+            self.model = BPNetLightning(
+                filters=config["filters"],
+                n_dil_layers=config["n_dil_layers"],
+                conv1_kernel_size=config["conv1_kernel_size"],
+                dilation_kernel_size=config["dilation_kernel_size"],
+                sequence_len=config["input_seq_len"],
+                out_pred_len=config["out_pred_len"],
+                learning_rate=config["learning_rate"],
+                dropout_rate=config["dropout_rate"],
+                seq_focus_len=config["seq_focus_len"],
+                loss=config["loss"],
+                use_attention_pooling=config["use_attention_pooling"]
             )
 
-        # Instantiate the model
-        self.model = BPNetLightning(
-            filters=config["filters"],
-            n_dil_layers=config["n_dil_layers"],
-            conv1_kernel_size=config["conv1_kernel_size"],
-            dilation_kernel_size = config["dilation_kernel_size"],
-            sequence_len=config["input_seq_len"],
-            out_pred_len=config["out_pred_len"],
-            learning_rate=config["learning_rate"],
-            dropout_rate = config["dropout_rate"],
-            seq_focus_len=config["seq_focus_len"],
-            loss=config["loss"]
-        )
-    
-
-        required_input_length = calculate_required_input_length(self.config['out_pred_len'],config)
-        print(f"Given config['out_pred_len'] = {self.config['out_pred_len']}, we need input_len = {required_input_length} \n")
-        print(f"Current sequence length is {self.config['input_seq_len']}")
-        
-    def fit(self, max_epochs: int = 50,
+    def fit(self, 
+            max_epochs: int = 50,
             batch_size: int = 128,
             early_stopping_patience: int = 5,
-            #train_size: Optional[float] = 0.9,
             check_val_every_n_epoch: Optional[Union[int, float]] = 1,
             save_path: Optional[str] = None,
             logger_out: Optional[WandbLogger] = None,
-            gpus = None):
+            resume_from_checkpoint: Optional[str] = None):
         
-        es_callback = EarlyStopping(monitor='val_weighted_mse', patience=early_stopping_patience, verbose=True, mode='min')
+        # Create callbacks
+        callbacks = [
+            EarlyStopping(
+                monitor="val_" + self.config["loss"], 
+                patience=early_stopping_patience, 
+                verbose=True, 
+                mode='min'
+            ),
+            ModelCheckpoint(
+                dirpath=save_path,
+                filename='cbpl-{epoch:02d}-{val_loss:.2f}',
+                save_top_k=3,
+                monitor="val_" + self.config["loss"],
+                mode='min'
+            )
+        ]
 
-        self.trainer = pl.Trainer(max_epochs=max_epochs,
-                                  #accelerator='gpu' if torch.cuda.is_available() else 'cpu',
-                                  #devices = gpus,
-                                  #distributed_backend='ddp',
-                                  logger=logger_out,
-                                  check_val_every_n_epoch=check_val_every_n_epoch,
-                                  enable_progress_bar=True,
-                                  default_root_dir=save_path,
-                                  callbacks=[es_callback])
-        self.trainer.fit(self.model, self.train_dataloader, self.valid_dataloader)
+        self.trainer = pl.Trainer(
+            max_epochs=max_epochs,
+            accelerator='gpu' if torch.cuda.is_available() else 'cpu',
+            devices="auto",
+            logger=logger_out,
+            check_val_every_n_epoch=check_val_every_n_epoch,
+            enable_progress_bar=True,
+            default_root_dir=save_path,
+            callbacks=callbacks,
+        )
+        
+        self.trainer.fit(
+            self.model, 
+            self.train_dataloader, 
+            self.valid_dataloader
+        )
 
     def save_model(self, save_dir):
-        # Save the model
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
         model_path = os.path.join(save_dir, 'chrombpnet_model.ckpt')
-        self.model.save_model(model_path)
+        torch.save(self.model.state_dict(), model_path)
         print(f"Model saved at {model_path}")

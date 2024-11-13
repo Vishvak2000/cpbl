@@ -2,9 +2,9 @@ import numpy as np
 import pytorch_lightning as pl
 import torch
 from torch import nn
-from utils.losses import WeightedMSELoss, FocusedMSELoss, WeightedMSELossNorm
+from utils.losses import FocusedMSELoss, WeightedMSELossNorm
 from torch.nn import MSELoss
-from ._base_modules import CNNModule, DilatedConvModule, Cropping1D, GlobalAvgPool1D, Flatten
+from ._base_modules import CNNModule, DilatedConvModule, Cropping1D, GlobalAvgPool1D, AttentionPooling
 from utils.shape_utils import calculate_layer_output_length
 from torchmetrics.regression import KLDivergence, ExplainedVariance, CosineSimilarity, MeanAbsoluteError, R2Score
 
@@ -20,14 +20,15 @@ class BPNetLightning(pl.LightningModule):
                  learning_rate,
                  dropout_rate,
                  seq_focus_len,
-                 loss):
+                 loss,
+                 use_attention_pooling):
         super().__init__()
         self.save_hyperparameters()
 
      
         self.eval_metrics = nn.ModuleDict({
-            "weighted_mse" : WeightedMSELoss(sequence_length=out_pred_len,center_size=seq_focus_len),
-            "weighted_norm_mse" : WeightedMSELossNorm(sequence_length=out_pred_len,center_size=seq_focus_len),
+            "weighted_norm_mse" : WeightedMSELossNorm(sequence_length=out_pred_len,center_size=seq_focus_len,scale=False),
+            "weighted_norm_mse_scaled" : WeightedMSELossNorm(sequence_length=out_pred_len,center_size=seq_focus_len,scale=True),
             "focused_mse" : FocusedMSELoss(n=500),
             "mse" : MSELoss(),
             "kl_divergence" : KLDivergence(log_prob=False),
@@ -94,104 +95,119 @@ class BPNetLightning(pl.LightningModule):
             
             current_length = conv_output_length
 
-        self.global_avg_pool = GlobalAvgPool1D()
-
-        if dropout_rate!=0.0:
+        self.use_attention_pooling = use_attention_pooling
+        if self.use_attention_pooling:
+            self.attention_pool = AttentionPooling(filters)
+            self.global_avg_pool = None  # Remove global average pooling
+        else:
+            self.global_avg_pool = GlobalAvgPool1D()
+        
+        if dropout_rate != 0.0:
             self.dropout = nn.Dropout(dropout_rate)
+        
+        self.count_dense = nn.Linear(filters, out_pred_len)
     
-
-        self.count_dense = nn.Linear(filters, out_pred_len)  # Modified to use filters as input
-
     def forward(self, x):
         x = self.initial_conv(x)
         
-        #for conv, bn, crop_layer in zip(self.dilated_convs, self.batch_norms, self.crop_layers):
         for conv, crop_layer in zip(self.dilated_convs, self.crop_layers):
-            # Apply dilated convolution
             conv_x = conv(x)
-            #conv_x = bn(conv_x)  # Apply batch normalization after the dilated convolution
             x = crop_layer(x)
-            x = conv_x + x #residual connection
+            x = conv_x + x
         
-        # Global average pooling across the sequence length
-        x = self.global_avg_pool(x)
-
+        # Apply attention pooling or global average pooling
+        if self.use_attention_pooling:
+            x, attention_weights = self.attention_pool(x)
+            # Store attention weights for visualization or analysis
+            self.last_attention_weights = attention_weights
+        else:
+            x = self.global_avg_pool(x)
+        
         if hasattr(self, 'dropout'):
             x = self.dropout(x)
         
-        # Final dense layer for count prediction
-        count_out = nn.ReLU()(self.count_dense(x)) # add a relu here to force the outputs to be positive
-        
+        count_out = nn.ReLU()(self.count_dense(x))
+        #self.print_gpu_memory_usage()
         return count_out
+    
 
+   
     def forward_test(self, x):
-            print(f"starting size:{x.shape}")
-            x = self.initial_conv(x)
-            print(f"after first convolution:{x.shape}")
-            
-
-            for i, (conv, crop_layer) in enumerate(zip(self.dilated_convs, self.crop_layers),1):
-                # Apply dilated convolution (this does not reduce the length because we are padding)
-                conv_x = conv(x)
-                print(f"after {i}th dilation:{conv_x.shape}")
-                x = crop_layer(x)
-                # Add residual connection
-                print(f"after {i}th crop:{x.shape}")
-                x = conv_x + x
+        print(f"starting size:{x.shape}")
+        x = self.initial_conv(x)
+        print(f"after first convolution:{x.shape}")
         
-            # We pool across the filters of the CNNs
-            gap = self.global_avg_pool(x) 
-            print(f"after pool:{gap.shape}")
-
-            # counts prediciton
-            count_out = self.count_dense(gap)
-            print(f"count dimensions : {count_out.shape}")
-            count_out = nn.ReLU()(count_out)
-            #return profile_out
-            return count_out
+        for i, (conv, crop_layer) in enumerate(zip(self.dilated_convs, self.crop_layers), 1):
+            conv_x = conv(x)
+            print(f"after {i}th dilation:{conv_x.shape}")
+            x = crop_layer(x)
+            print(f"after {i}th crop:{x.shape}")
+            x = conv_x + x
+        
+        print(f"before pooling:{x.shape}")
+        if self.use_attention_pooling:
+            x, attention_weights = self.attention_pool(x)
+            print(f"attention weights shape:{attention_weights.shape}")
+        else:
+            x = self.global_avg_pool(x)
+        print(f"after pooling:{x.shape}")
+        
+        count_out = nn.ReLU()(self.count_dense(x))
+        print(f"final output:{count_out.shape}")
+        return count_out
 
     def calculate_metrics(self, y_hat, y):
         results = {}
+        device = y_hat.device  # Get the device of y_hat
         for metric_name, metric_fn in self.eval_metrics.items():
+            #if isinstance(metric_fn, torch.nn.Module):
+            #    metric_fn = metric_fn.to(device)
             if metric_name == "kl_divergence":
-                results[metric_name] = metric_fn((y_hat/y_hat.sum()), (y/y.sum()))
-            if metric_name == "r2":
-                results[metric_name] = metric_fn((y_hat.view(-1)), (y.view(-1)))
+                results[metric_name] = (metric_fn((y_hat/y_hat.sum()), (y/y.sum()))).item()
+            elif metric_name == "r2":
+                results[metric_name] = (metric_fn((y_hat.view(-1)), (y.view(-1)))).item()
             else:
-                results[metric_name] = metric_fn(y_hat, y)
-        
+                results[metric_name] = (metric_fn(y_hat, y)).item()
         return results
     
     def log_metrics(self, y_hat, y, prefix):
-        metrics = self.calculate_metrics(y_hat, y)
+        metrics = self.calculate_metrics(y_hat.detach(), y.detach())
 
         for metric_name, metric_value in metrics.items():
             self.log(f"{prefix}_{metric_name}", metric_value, on_step=False, on_epoch=True, logger=True)
         
         #try separately calculating weighted mse - maybe thats the issue?
         loss = self.eval_metrics[self.loss](y_hat, y)
+        #self.print_gpu_memory_usage()
         return loss  
 
 
     def training_step(self, train_batch, batch_idx):
         x, y = train_batch 
+        #x = x.to(self.device)
+        #y = y.to(self.device)
         y_hat_count = self(x)
-        loss = self.log_metrics(y_hat_count,y,"train")
-        #self.log('train_loss', loss_count, on_epoch=True, on_step=True, batch_size=y_hat_count.shape[0], prog_bar = True)
+        loss = self.log_metrics(y_hat_count, y, "train")
+        #loss = loss.detach()
+        torch.cuda.empty_cache() # Added garbage collection
+
         return loss
     
+    @torch.no_grad()
     def validation_step(self, validation_batch, batch_idx):
         x, y = validation_batch 
+        #x = x.to(self.device)
+        #y = y.to(self.device)
         y_hat_count = self(x)
-        loss = self.log_metrics(y_hat_count,y,"val")
+        loss = self.log_metrics(y_hat_count.detach(), y.detach(), "val")
         lr = self.optimizers().param_groups[0]['lr']
         self.log('learning_rate', lr, on_step=False, on_epoch=True, prog_bar=True)
-        #self.log('train_loss', loss_count, on_epoch=True, on_step=True, batch_size=y_hat_count.shape[0], prog_bar = True)
+        loss = loss.detach()
         return loss
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.parameters(), lr=self.hparams.learning_rate)
-        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=2, verbose=True)
+        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=2, verbose=True)
         return {
             "optimizer": optimizer,
             "lr_scheduler": {
@@ -201,3 +217,5 @@ class BPNetLightning(pl.LightningModule):
                 "frequency": 1,
             },
         }
+
+

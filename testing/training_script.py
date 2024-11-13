@@ -12,7 +12,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Training script for CBPLTrainer.')
     
     # Add arguments with default values
-    parser.add_argument('--peak_regions', type=str, default="/gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/test.chr1_to_chr10.no_blacklist.bed",
+    parser.add_argument('--peak_regions', type=str, default="/gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/ENCFF314YTZ.bed",
                         help='Path to peak regions BED file')
     parser.add_argument('--nonpeak_regions', type=str, default="/gladstone/corces/lab/users/vishvak/chrombpnet_tutorial/own_data/test.chr1.negatives.adjusted.bed",
                         help='Path to non-peak regions BED file')
@@ -44,15 +44,15 @@ def parse_args():
                         help='Learning rate for the optimizer')
     parser.add_argument('--project', type=str, default="chrombpnetL",
                         help='Project name for wandb')
-    parser.add_argument('--train_chrs', type=list, default=["chr1","chr2","chr3","chr4","chr5"],
+    parser.add_argument('--train_chrs', type=list, default=["chr1","chr2","chr3","chr4","chr5","chr6","chr7","chr8","chr9","chr10"],
                         help='List for training chrs')
-    parser.add_argument('--valid_chrs', type=list, default=["chr6","chr7"],
+    parser.add_argument('--valid_chrs', type=list, default=["chr11","chr10"],
                         help='List for validation chrs')
     parser.add_argument('--seq_focus_len', type=int, default=500,
                         help='Gaussian middle n weighting')
-    parser.add_argument('--loss', type=str, default="mse",
+    parser.add_argument('--loss', type=str, default="weighted_norm_mse",
                         help='Pick the right loss to use')
-    parser.add_argument('--use_cpu',type=bool,default=True,
+    parser.add_argument('--use_cpu',type=bool,default=False,
                         help='Using CPU or GPU')
     
     return parser.parse_args()
@@ -99,7 +99,7 @@ def main():
         "loss" : args.loss
     }
 
-    wandb_logger = WandbLogger(project=args.project,config=config)
+    wandb_logger = WandbLogger(project=args.project,config=config,mode='offline')
 
 
     trainer = CBPLTrainer(config)

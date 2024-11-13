@@ -1,1 +1,27 @@
-/testing/lightning_logs
+./testing/lightning_logs
+./wandb
+
+# Ignore all virtual environment folders
+.venv/
+env/
+venv/
+
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore any MacOS system files
+.DS_Store
+
+# Ignore other logs or artifacts
+logs/
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Additional directories used by pytorch_lightning
+**/lightning_logs/version_*/

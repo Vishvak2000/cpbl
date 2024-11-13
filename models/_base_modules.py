@@ -1,6 +1,7 @@
 #here is where the initial modules are eg: CNN, RNN, etc
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 
 class CNNModule(nn.Module):
@@ -84,3 +85,33 @@ class GlobalAvgPool1D(nn.Module):
         # x has shape (batch_size, time_steps, channels)
         # Perform global average pooling across the time_steps (dim=1)
         return torch.mean(x, dim=-1)
+
+
+class AttentionPooling(nn.Module):
+    def __init__(self, in_features, hidden_features=None):
+        super().__init__()
+        if hidden_features is None:
+            hidden_features = in_features // 2
+            
+        self.attention = nn.Sequential(
+            nn.Linear(in_features, hidden_features),
+            nn.Tanh(),  # Tanh gives better stability than ReLU for attention
+            nn.Linear(hidden_features, 1)
+        )
+        
+    def forward(self, x):
+        # x shape: [batch_size, channels, sequence_length]
+        # Transpose to [batch_size, sequence_length, channels]
+        x = x.transpose(1, 2)
+        
+        # Calculate attention weights
+        weights = self.attention(x)  # [batch_size, sequence_length, 1]
+        weights = F.softmax(weights, dim=1)  # Normalize across sequence length
+        
+        # Apply attention weights
+        weighted = x * weights  # Broadcasting will handle the dimensions
+        
+        # Sum across sequence length
+        pooled = weighted.sum(dim=1)  # [batch_size, channels]
+        
+        return pooled, weights
