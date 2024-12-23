@@ -6,6 +6,7 @@ from ._module import BPNetLightning
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint, TQDMProgressBar
 from typing import Optional, Union
 from utils.shape_utils import calculate_required_input_length
+from utils.data_utils import calculate_average_total_counts
 from pytorch_lightning.loggers import WandbLogger
 import os
 
@@ -21,7 +22,9 @@ class CBPLTrainer:
             cts_bw_file=config["cts_bw_file"],
             input_len=config["input_seq_len"],
             output_len=config["out_pred_len"],
-            negative_sampling_ratio=config["negative_sampling_ratio"]
+            negative_sampling_ratio=config["negative_sampling_ratio"],
+            jitter=config["jitter"],
+            jitter_scale=config["jitter_scale"]
         )
 
         # Create data loaders
@@ -31,6 +34,9 @@ class CBPLTrainer:
             valid_chrs=config["valid_chrs"]
         )
 
+        #print("Calculating average count for combined loss weight")
+        #self.average_count = calculate_average_total_counts(self.train_dataloader)
+        #print(f"Average count per training peak = {self.average_count}")
         # Instantiate or load the model
         if checkpoint_path is not None:
             print(f"Loading model from checkpoint: {checkpoint_path}")
@@ -43,10 +49,16 @@ class CBPLTrainer:
                 sequence_len=config["input_seq_len"],
                 out_pred_len=config["out_pred_len"],
                 learning_rate=config["learning_rate"],
+                profile_kernel_size = config["profile_kernel_size"],
                 dropout_rate=config["dropout_rate"],
                 seq_focus_len=config["seq_focus_len"],
-                loss=config["loss"],
-                use_attention_pooling=config["use_attention_pooling"]
+                #multinomial_weight=config["multinomial_weight"],
+                #mse_weight=config["mse_weight"],
+                #avg_total_counts = self.average_count,
+                avg_total_counts = 1,
+                flavor = config["flavor"],
+                alpha = config["alpha"],
+                return_embeddings = config["return_embeddings"]
             )
         else:
             self.model = BPNetLightning(
@@ -57,10 +69,16 @@ class CBPLTrainer:
                 sequence_len=config["input_seq_len"],
                 out_pred_len=config["out_pred_len"],
                 learning_rate=config["learning_rate"],
+                profile_kernel_size = config["profile_kernel_size"],
                 dropout_rate=config["dropout_rate"],
                 seq_focus_len=config["seq_focus_len"],
-                loss=config["loss"],
-                use_attention_pooling=config["use_attention_pooling"]
+                #multinomial_weight=config["multinomial_weight"],
+                #mse_weight=config["mse_weight"],
+                flavor = config["flavor"],
+                #avg_total_counts = self.average_count,
+                avg_total_counts = 1,
+                alpha = config["alpha"],
+                return_embeddings = config["return_embeddings"]
             )
 
     def fit(self, 
@@ -75,7 +93,7 @@ class CBPLTrainer:
         # Create callbacks
         callbacks = [
             EarlyStopping(
-                monitor="val_" + self.config["loss"], 
+                monitor="val_combined_loss", 
                 patience=early_stopping_patience, 
                 verbose=True, 
                 mode='min'
@@ -84,7 +102,7 @@ class CBPLTrainer:
                 dirpath=save_path,
                 filename='cbpl-{epoch:02d}-{val_loss:.2f}',
                 save_top_k=3,
-                monitor="val_" + self.config["loss"],
+                monitor="val_combined_loss",
                 mode='min'
             )
         ]

@@ -51,24 +51,20 @@ class DilatedConvModule(nn.Module):
         x = self.activation(x)
         return x
 
+
 class Cropping1D(nn.Module):
     def __init__(self, crop_size):
         super().__init__()
-        self.crop_size = crop_size  # Total amount to crop (both sides combined)
-
+        self.crop_size = crop_size
+    
     def forward(self, x):
-        # For skip connections, we need to crop from both ends equally
-        crop_left = self.crop_size // 2
-        crop_right = self.crop_size - crop_left
-        
-        if crop_right > 0:
-            return x[:, :, crop_left:-crop_right]
-        return x[:, :, crop_left:]
-
+        # Calculate the amount to crop from each side
+        crop_per_side = self.crop_size // 2
+        return x[:, :, crop_per_side:-crop_per_side]
+    
 class Flatten(nn.Module):
     def __init__(self):
         super().__init__()
-        # Assign the flatten operation to an attribute (which acts like a "name")
         self.flatten = nn.Flatten()  # Equivalent to Flatten() in Keras
 
     def forward(self, x):

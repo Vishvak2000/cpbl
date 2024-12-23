@@ -1,7 +1,0 @@
-conv1_kernel_size: 64
-dilation_kernel_size: 3
-filters: 64
-learning_rate: 1.0e-05
-n_dil_layers: 9
-out_pred_len: 1000
-sequence_len: 3107

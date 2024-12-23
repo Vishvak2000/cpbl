@@ -14,7 +14,11 @@ class ChromatinDataset(Dataset):
                  cts_bw_file, 
                  input_len, 
                  output_len, 
-                 negative_sampling_ratio):
+                 negative_sampling_ratio,
+                 jitter: bool = False,  # New parameter with default False
+                 jitter_scale: float = 0.1):
+        self.jitter = jitter
+        self.jitter_scale = jitter_scale
         self.input_len = input_len
         self.output_len = output_len
         self.negative_sampling_ratio = negative_sampling_ratio
@@ -55,11 +59,22 @@ class ChromatinDataset(Dataset):
             label = 0
 
         seq = data_utils.get_seq(self.genome, row['chr'], row['start'], row['end'], self.input_len)
-        seq_one_hot = one_hot.dna_to_one_hot([seq])[0]  # Pass as list and take first element
+        
+        seq_one_hot = one_hot.dna_to_one_hot([seq])[0]
         cts = data_utils.get_cts(self.bw, row['chr'], row['start'], row['end'], self.output_len)
-
+    
+        # Conditional jitter
+        if self.jitter:
+            cts_processed = cts + np.random.normal(0, self.jitter_scale * cts.std(), size=cts.shape)
+            cts_processed = np.maximum(cts_processed, 0)  # Ensure non-negative
+        else:
+            cts_processed = cts
+        
+        log_cts = np.log(1 + cts_processed.sum(-1, keepdims=True))
+        log_cts_tensor = torch.tensor(log_cts, dtype=torch.float32)
+        
         return (torch.tensor(seq_one_hot, dtype=torch.float32).permute(1, 0),
-                torch.tensor(cts, dtype=torch.float32))
+                [log_cts_tensor, torch.tensor(cts_processed, dtype=torch.float32)])
 
     def split(self, train_chrs: list, valid_chrs: list, batch_size: int):
         train_indices = self.peak_df[self.peak_df['chr'].isin(train_chrs)].index.tolist()
