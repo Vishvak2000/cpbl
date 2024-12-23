@@ -1,6 +1,7 @@
 #here is where the initial modules are eg: CNN, RNN, etc
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 
 class CNNModule(nn.Module):
@@ -50,24 +51,20 @@ class DilatedConvModule(nn.Module):
         x = self.activation(x)
         return x
 
+
 class Cropping1D(nn.Module):
     def __init__(self, crop_size):
         super().__init__()
-        self.crop_size = crop_size  # Total amount to crop (both sides combined)
-
+        self.crop_size = crop_size
+    
     def forward(self, x):
-        # For skip connections, we need to crop from both ends equally
-        crop_left = self.crop_size // 2
-        crop_right = self.crop_size - crop_left
-        
-        if crop_right > 0:
-            return x[:, :, crop_left:-crop_right]
-        return x[:, :, crop_left:]
-
+        # Calculate the amount to crop from each side
+        crop_per_side = self.crop_size // 2
+        return x[:, :, crop_per_side:-crop_per_side]
+    
 class Flatten(nn.Module):
     def __init__(self):
         super().__init__()
-        # Assign the flatten operation to an attribute (which acts like a "name")
         self.flatten = nn.Flatten()  # Equivalent to Flatten() in Keras
 
     def forward(self, x):
@@ -84,3 +81,33 @@ class GlobalAvgPool1D(nn.Module):
         # x has shape (batch_size, time_steps, channels)
         # Perform global average pooling across the time_steps (dim=1)
         return torch.mean(x, dim=-1)
+
+
+class AttentionPooling(nn.Module):
+    def __init__(self, in_features, hidden_features=None):
+        super().__init__()
+        if hidden_features is None:
+            hidden_features = in_features // 2
+            
+        self.attention = nn.Sequential(
+            nn.Linear(in_features, hidden_features),
+            nn.Tanh(),  # Tanh gives better stability than ReLU for attention
+            nn.Linear(hidden_features, 1)
+        )
+        
+    def forward(self, x):
+        # x shape: [batch_size, channels, sequence_length]
+        # Transpose to [batch_size, sequence_length, channels]
+        x = x.transpose(1, 2)
+        
+        # Calculate attention weights
+        weights = self.attention(x)  # [batch_size, sequence_length, 1]
+        weights = F.softmax(weights, dim=1)  # Normalize across sequence length
+        
+        # Apply attention weights
+        weighted = x * weights  # Broadcasting will handle the dimensions
+        
+        # Sum across sequence length
+        pooled = weighted.sum(dim=1)  # [batch_size, channels]
+        
+        return pooled, weights

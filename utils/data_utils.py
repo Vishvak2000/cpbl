@@ -4,6 +4,7 @@ import pandas as pd
 import pyBigWig
 import pyfaidx
 from . import one_hot
+import torch
 
 def process_bed(tsv_path):
     """Read a TSV file, select the first 3 columns, and rename them."""
@@ -43,5 +44,22 @@ def load_data(bed_regions, nonpeak_regions):
     nonpeak_df = process_bed(nonpeak_regions)
     return peak_df, nonpeak_df
 
-
-
+def calculate_average_total_counts(dataloader):
+    """
+    Calculate average total counts across the training dataset
+    
+    Args:
+    - dataloader: PyTorch DataLoader for training data
+    
+    Returns:
+    - Average total count
+    """
+    total_counts = []
+    for batch in dataloader:
+        # Assuming the second element of targets is total counts
+        _, targets = batch
+        log_total_counts = targets[0]  # log-transformed total counts
+        total_count_batch = torch.expm1(log_total_counts)
+        total_counts.extend(total_count_batch.numpy())
+    
+    return np.median(total_counts)
